@@ -42,15 +42,42 @@ const mlbTeamsData = JSON.parse('[{"key":"angels","mlbStatsId":108,"name":"Los A
 console.log(mlbTeamsData);
 
 var fetchSchedule = function(teamData) {
-  // fetch from mlb stats api
-  var schedule = JSON.parse('{"copyright":"Copyright 2021 MLB Advanced Media, L.P.  Use of any content on this page acknowledges agreement to the terms posted here http://gdx.mlb.com/components/copyright.txt","totalItems":32,"totalEvents":0,"totalGames":32,"totalGamesInProgress":0,"dates":[{"date":"2021-04-28","totalItems":1,"totalEvents":0,"totalGames":1,"totalGamesInProgress":0,"games":[{"gamePk":634362,"link":"/api/v1.1/game/634362/feed/live","gameType":"R","season":"2021","gameDate":"2021-04-28T23:05:00Z","officialDate":"2021-04-28","status":{"abstractGameState":"Preview","codedGameState":"S","detailedState":"Scheduled","statusCode":"S","startTimeTBD":false,"abstractGameCode":"P"},"teams":{"away":{"leagueRecord":{"wins":9,"losses":13,"pct":".409"},"team":{"id":147,"name":"New York Yankees","link":"/api/v1/teams/147"},"splitSquad":false,"seriesNumber":8},"home":{"leagueRecord":{"wins":10,"losses":12,"pct":".455"},"team":{"id":110,"name":"Baltimore Orioles","link":"/api/v1/teams/110"},"splitSquad":false,"seriesNumber":8}},"venue":{"id":2,"name":"Oriole Park at Camden Yards","link":"/api/v1/venues/2"},"content":{"link":"/api/v1/game/634362/content"},"gameNumber":1,"publicFacing":true,"doubleHeader":"N","gamedayType":"P","tiebreaker":"N","calendarEventID":"14-634362-2021-04-28","seasonDisplay":"2021","dayNight":"night","scheduledInnings":9,"reverseHomeAwayStatus":false,"inningBreakLength":120,"gamesInSeries":4,"seriesGameNumber":3,"seriesDescription":"Regular Season","recordSource":"S","ifNecessary":"N","ifNecessaryDescription":"Normal Game"}],"events":[]},{"date":"2021-04-29","totalItems":1,"totalEvents":0,"totalGames":1,"totalGamesInProgress":0,"games":[{"gamePk":634300,"link":"/api/v1.1/game/634300/feed/live","gameType":"R","season":"2021","gameDate":"2021-04-29T17:05:00Z","officialDate":"2021-04-29","status":{"abstractGameState":"Preview","codedGameState":"S","detailedState":"Scheduled","statusCode":"S","startTimeTBD":false,"abstractGameCode":"P"},"teams":{"away":{"leagueRecord":{"wins":9,"losses":13,"pct":".409"},"team":{"id":147,"name":"New York Yankees","link":"/api/v1/teams/147"},"splitSquad":false,"seriesNumber":8},"home":{"leagueRecord":{"wins":10,"losses":12,"pct":".455"},"team":{"id":110,"name":"Baltimore Orioles","link":"/api/v1/teams/110"},"splitSquad":false,"seriesNumber":8}},"venue":{"id":2,"name":"Oriole Park at Camden Yards","link":"/api/v1/venues/2"},"content":{"link":"/api/v1/game/634300/content"},"gameNumber":1,"publicFacing":true,"doubleHeader":"N","gamedayType":"P","tiebreaker":"N","calendarEventID":"14-634300-2021-04-29","seasonDisplay":"2021","dayNight":"day","scheduledInnings":9,"reverseHomeAwayStatus":false,"inningBreakLength":120,"gamesInSeries":4,"seriesGameNumber":4,"seriesDescription":"Regular Season","recordSource":"S","ifNecessary":"N","ifNecessaryDescription":"Normal Game"}],"events":[]}]}');
-  // append the team data to the schedule data object
-  schedule.teamData = teamData;
+  // get current date
+  var today = dayjs()
+  var startDate = today.format('YYYY-MM-DD');
+  var endDate = today.add(13, 'day').format('YYYY-MM-DD');
 
-  // pass data to displaySchedule() function
-  displaySchedule(schedule);
-  
+  // fetch from mlb stats api
+  var endpoint = 'https://statsapi.mlb.com/api/v1/schedule/games/?sportId=1&startDate=' + startDate + '&endDate=' + endDate + '&teamId=' + teamData.mlbStatsId;
+  console.log(endpoint);
+  fetch(endpoint)
+  .then(function (response) {
+    if (response.ok) {
+      response.json().then(function (data) {
+        // include the team data in the schedule data object
+        var schedule = { teamData: teamData, games: [] };
+
+        for (var i = 0; i < data.dates.length; i++) {
+          // handle double headers
+          for (var j = 0; j < data.dates[i].games.length; j++) {
+            if (data.dates[i].games[j].teams.home.team.id === teamData.mlbStatsId) {
+              schedule.games.push(data.dates[i].games[j]);
+            }
+          }
+        }
+
+        // pass data to displaySchedule() function
+        displaySchedule(schedule);        
+      });
+    } else {
+      displayError('Unable to fetch schedule information.<br>[ ' + response.statusText + ' ]<br>Please try again later.');
+    }
+  }).catch(function (error) {
+    displayError('Unable to fetch schedule information.<br>[ ' + error + ' ]<br>Please try again later.');
+  });
+
   // does not need to return anything
+  return true;
 };
 
 var fetchWeatherForecast = function(location) {
@@ -101,7 +128,7 @@ var handleGameClick = function(event) {
   console.log('game selected');
 };
 
-fetchSchedule(mlbTeamsData[18]);
+fetchSchedule(mlbTeamsData[10]);
 
 // add an event listener to the team select input(s) and call handleTeamSelect()
 // add an event listener, probably on the container around the upcoming games, to caputre the game selected by the user for drilldown
