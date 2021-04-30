@@ -43,9 +43,13 @@ console.log(mlbTeamsData);
 
 var fetchSchedule = function(teamData) {
   // fetch from mlb stats api
+  var schedule = JSON.parse('{"copyright":"Copyright 2021 MLB Advanced Media, L.P.  Use of any content on this page acknowledges agreement to the terms posted here http://gdx.mlb.com/components/copyright.txt","totalItems":32,"totalEvents":0,"totalGames":32,"totalGamesInProgress":0,"dates":[{"date":"2021-04-28","totalItems":1,"totalEvents":0,"totalGames":1,"totalGamesInProgress":0,"games":[{"gamePk":634362,"link":"/api/v1.1/game/634362/feed/live","gameType":"R","season":"2021","gameDate":"2021-04-28T23:05:00Z","officialDate":"2021-04-28","status":{"abstractGameState":"Preview","codedGameState":"S","detailedState":"Scheduled","statusCode":"S","startTimeTBD":false,"abstractGameCode":"P"},"teams":{"away":{"leagueRecord":{"wins":9,"losses":13,"pct":".409"},"team":{"id":147,"name":"New York Yankees","link":"/api/v1/teams/147"},"splitSquad":false,"seriesNumber":8},"home":{"leagueRecord":{"wins":10,"losses":12,"pct":".455"},"team":{"id":110,"name":"Baltimore Orioles","link":"/api/v1/teams/110"},"splitSquad":false,"seriesNumber":8}},"venue":{"id":2,"name":"Oriole Park at Camden Yards","link":"/api/v1/venues/2"},"content":{"link":"/api/v1/game/634362/content"},"gameNumber":1,"publicFacing":true,"doubleHeader":"N","gamedayType":"P","tiebreaker":"N","calendarEventID":"14-634362-2021-04-28","seasonDisplay":"2021","dayNight":"night","scheduledInnings":9,"reverseHomeAwayStatus":false,"inningBreakLength":120,"gamesInSeries":4,"seriesGameNumber":3,"seriesDescription":"Regular Season","recordSource":"S","ifNecessary":"N","ifNecessaryDescription":"Normal Game"}],"events":[]},{"date":"2021-04-29","totalItems":1,"totalEvents":0,"totalGames":1,"totalGamesInProgress":0,"games":[{"gamePk":634300,"link":"/api/v1.1/game/634300/feed/live","gameType":"R","season":"2021","gameDate":"2021-04-29T17:05:00Z","officialDate":"2021-04-29","status":{"abstractGameState":"Preview","codedGameState":"S","detailedState":"Scheduled","statusCode":"S","startTimeTBD":false,"abstractGameCode":"P"},"teams":{"away":{"leagueRecord":{"wins":9,"losses":13,"pct":".409"},"team":{"id":147,"name":"New York Yankees","link":"/api/v1/teams/147"},"splitSquad":false,"seriesNumber":8},"home":{"leagueRecord":{"wins":10,"losses":12,"pct":".455"},"team":{"id":110,"name":"Baltimore Orioles","link":"/api/v1/teams/110"},"splitSquad":false,"seriesNumber":8}},"venue":{"id":2,"name":"Oriole Park at Camden Yards","link":"/api/v1/venues/2"},"content":{"link":"/api/v1/game/634300/content"},"gameNumber":1,"publicFacing":true,"doubleHeader":"N","gamedayType":"P","tiebreaker":"N","calendarEventID":"14-634300-2021-04-29","seasonDisplay":"2021","dayNight":"day","scheduledInnings":9,"reverseHomeAwayStatus":false,"inningBreakLength":120,"gamesInSeries":4,"seriesGameNumber":4,"seriesDescription":"Regular Season","recordSource":"S","ifNecessary":"N","ifNecessaryDescription":"Normal Game"}],"events":[]}]}');
   // append the team data to the schedule data object
-  // pass data to displaySchedule() function
+  schedule.teamData = teamData;
 
+  // pass data to displaySchedule() function
+  displaySchedule(schedule);
+  
   // does not need to return anything
 };
 
@@ -69,14 +73,17 @@ var fetchGameDetails = function(index) {
 var displaySchedule = function(scheduleData) {
   // use the schedule data returned from the mlb stats api to fill in/build out the upcoming schedule
   // if no games, this function should display a message and hide the forecast container
+  console.log('schedule data', scheduleData);
 };
 
 var displayForecast = function(weatherData) {
   // use the weather data returned from the openweather api to fill in/build out the 7 day forecast
+  console.log('weather data', weatherData);
 };
 
 var displayGameDayInfo = function() {
   // use weather data from local storage and game details from local storage to fill in/build out game day info 
+  console.log('game day info');
 };
 
 var handleTeamSelect = function (event) {
@@ -85,13 +92,16 @@ var handleTeamSelect = function (event) {
   // do a lookup on the mlbTeamsData array
   // call fetchSchedule() passing the selected team's object
   // call fetchWeatherForecast() passing the team's location data (city or lat/long?)
-
+  console.log('team selected');
 };
 
 var handleGameClick = function(event) {
   // get the selectedIndex from the selected game
   // call fetchGameDetails() passing the selectedIndex
+  console.log('game selected');
 };
+
+fetchSchedule(mlbTeamsData[18]);
 
 // add an event listener to the team select input(s) and call handleTeamSelect()
 // add an event listener, probably on the container around the upcoming games, to caputre the game selected by the user for drilldown
