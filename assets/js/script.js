@@ -4,12 +4,12 @@
 
   APIs:
 
-  MLB Stats: http://statsapi.mlb.com/api/v1/schedule/games/?sportId=1&startDate=2021-03-28&endDate=2021-05-01&teamId=147
+  MLB Stats: https://statsapi.mlb.com/api/v1/schedule/games/?sportId=1&startDate=2021-03-28&endDate=2021-05-01&teamId=147
 
   Weather: https://openweathermap.org/api
     examples:
-      city search: http://api.openweathermap.org/geo/1.0/direct?q=Bronx,NY,US&limit=3&appid=f396f0f7fdce40c1a84f7337a2c39948
-      weather: http://api.openweathermap.org/data/2.5/onecall?lat=40.8273&lon=-73.9236&exclude=minutely&units=imperial&appid=f396f0f7fdce40c1a84f7337a2c39948
+      city search: https://api.openweathermap.org/geo/1.0/direct?q=Bronx,NY,US&limit=3&appid=f396f0f7fdce40c1a84f7337a2c39948
+      weather: https://api.openweathermap.org/data/2.5/onecall?lat=40.8273&lon=-73.9236&exclude=minutely&units=imperial&appid=f396f0f7fdce40c1a84f7337a2c39948
 
   
   Teams with domed stadiums:
@@ -150,10 +150,11 @@ var fetchWeatherForecast = function(teamKey) {
 };
 
 var fetchGameDetails = function(index) {
+  console.log(scheduleData.dates[index].games[0]);
   // use the passed in index to grab the gameDetailsUri at scheduleData.dates[index].games[0].link
   // fetch game details from mlb stats api using the gameDetailsUri
   // append the game details to the game data at the given index in scheduleData.dates
-  // call displayGameDayInfo()
+  // call displayGameDayInfo(), passing in the index of the game/date in scheduleData.dates array
 }
 
 var displaySchedule = function(scheduleData) {
@@ -167,13 +168,13 @@ var displayForecast = function(weatherData) {
   console.log('weather data', weatherData);
 };
 
-var displayGameDayInfo = function() {
+var displayGameDayInfo = function(index) {
   // use weather data from local storage and game details from local storage to fill in/build out game day info 
   console.log('game day info');
 };
 
 var handleTeamSelect = function (event) {
-  // store the team id in an array in local storage (search history)
+  console.log(event);
   // grab the selected team id
   // do a lookup on the mlbTeamsData array
   // call fetchSchedule() passing the selected team's object
@@ -182,6 +183,7 @@ var handleTeamSelect = function (event) {
 };
 
 var handleGameClick = function(event) {
+  console.log(event);
   // get the selectedIndex from the selected game
   // call fetchGameDetails() passing the selectedIndex
   console.log('game selected');
@@ -192,4 +194,7 @@ fetchSchedule(teamKey);
 fetchWeatherForecast(teamKey);
 
 // add an event listener to the team select input(s) and call handleTeamSelect()
+teamSelectEl.addEventListener('change', handleTeamSelect);
+
 // add an event listener, probably on the container around the upcoming games, to caputre the game selected by the user for drilldown
+upcomingGamesEl.addEventListener('click', handleGameClick);
