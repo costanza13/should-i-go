@@ -180,12 +180,13 @@ var displayGameDayInfo = function (teamKey, index) {
 };
 
 var handleTeamSelect = function (event) {
-  console.log(event);
+  var teamKey = event.target.value;
   // grab the selected team id
   // do a lookup on the mlbTeamsData array
   // call fetchSchedule() passing the selected team's object
   // call fetchWeatherForecast() passing the team's location data (city or lat/long?)
-  console.log('team selected');
+  console.log('team selected', teamKey);
+  console.log('selected team data', mlbTeamsData[teamKey]);
 };
 
 var handleGameClick = function (event) {
@@ -214,7 +215,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
   fetchSchedule(teamKey);
   // fetchWeatherForecast(teamKey);
 
-  
 })
 
 // stuff to do when page it loaded
