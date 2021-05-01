@@ -1,4 +1,4 @@
-var mlbTeams = [];
+var mlbTeams = {};
 
 const stadiums = {
   dbacks:	{city: 'Phoenix, AZ, US', hexColor: '#A71930', rgbColor: '(167,25,48)', domed: true},
@@ -45,9 +45,8 @@ var getMlbTeamData = function() {
             // console.log(team.teamName);
             var key = team.teamName.toLowerCase();
             var stadiumKey = key.replace(' ', '').replace('-', '');
-            mlbTeams.push(
+            mlbTeams[key] = 
               {
-                key: key,
                 mlbStatsId: team.id,
                 name: team.name,
                 stadiumName: team.venue.name,
@@ -55,8 +54,7 @@ var getMlbTeamData = function() {
                 isDomed: stadiums[stadiumKey].domed,
                 hexColor: stadiums[stadiumKey].hexColor,
                 rgbColor: stadiums[stadiumKey].rgbColor,
-              }
-            );             
+              };
           };
         }
         console.log(mlbTeams);
