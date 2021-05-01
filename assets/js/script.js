@@ -4,12 +4,12 @@
 
   APIs:
 
-  MLB Stats: http://statsapi.mlb.com/api/v1/schedule/games/?sportId=1&startDate=2021-03-28&endDate=2021-05-01&teamId=147
+  MLB Stats: https://statsapi.mlb.com/api/v1/schedule/games/?sportId=1&startDate=2021-03-28&endDate=2021-05-01&teamId=147
 
   Weather: https://openweathermap.org/api
     examples:
-      city search: http://api.openweathermap.org/geo/1.0/direct?q=Bronx,NY,US&limit=3&appid=f396f0f7fdce40c1a84f7337a2c39948
-      weather: http://api.openweathermap.org/data/2.5/onecall?lat=40.8273&lon=-73.9236&exclude=minutely&units=imperial&appid=f396f0f7fdce40c1a84f7337a2c39948
+      city search: https://api.openweathermap.org/geo/1.0/direct?q=Bronx,NY,US&limit=3&appid=f396f0f7fdce40c1a84f7337a2c39948
+      weather: https://api.openweathermap.org/data/2.5/onecall?lat=40.8273&lon=-73.9236&exclude=minutely&units=imperial&appid=f396f0f7fdce40c1a84f7337a2c39948
 
   
   Teams with domed stadiums:
