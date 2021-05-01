@@ -187,6 +187,7 @@ var handleTeamSelect = function (event) {
   // call fetchWeatherForecast() passing the team's location data (city or lat/long?)
   console.log('team selected', teamKey);
   console.log('selected team data', mlbTeamsData[teamKey]);
+  fetchSchedule(teamKey);
 };
 
 var handleGameClick = function (event) {
@@ -211,8 +212,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
   var selectEls = document.querySelectorAll('select');
   var instances = M.FormSelect.init(selectEls, '');
 
-  const teamKey = 'yankees';
-  fetchSchedule(teamKey);
+  // const teamKey = 'yankees';
+  // fetchSchedule(teamKey);
   // fetchWeatherForecast(teamKey);
 
 })
