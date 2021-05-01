@@ -21,19 +21,16 @@
 
   <div class="container">
     <!-- Start screen intion module to select team -->
-    <div id="startScreen">
+    <div id="startScreen" class="row">
       <h1>Should I Go?</h1>
       <p>Choose your favorite team from the list below</p>
 
-      <!-- Dropdown Trigger -->
-      <a class='dropdown-trigger btn' href='#' data-target='dropdown1'>Get Started</a>
-
-      <!-- Dropdown Structure -->
-      <ul id='dropdown1' class='dropdown-content'>
-        <li><a href="#!">Athletics</a></li>
-        <li><a href="#!">Giants</a></li>
-        <li><a href="#!">Mets</a></li>
-      </ul>
+      <div class="input-field col s12 m4">
+        <select id="team-select-main">
+          <option value="" disabled selected>Select team</option>
+        </select>
+      </div>
+      <div class="col m8"></div>
     </div>
 
     <div id="gamesOverview">
