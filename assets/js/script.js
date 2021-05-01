@@ -150,11 +150,11 @@ var fetchWeatherForecast = function(teamKey) {
 };
 
 var fetchGameDetails = function(index) {
-  console.log(scheduleData.dates[index].games[0]);
-  // use the passed in index to grab the gameDetailsUri at scheduleData.dates[index].games[0].link
+  console.log(gamesData.schedule.dates[index].games[0]);
+  // use the passed in index to grab the gameDetailsUri at gamesData.schedule.dates[index].games[0].link
   // fetch game details from mlb stats api using the gameDetailsUri
-  // append the game details to the game data at the given index in scheduleData.dates
-  // call displayGameDayInfo(), passing in the index of the game/date in scheduleData.dates array
+  // append the game details to the game data at the given index in gamesData.schedule.dates
+  // call displayGameDayInfo(), passing in the index of the game/date in gamesData.schedule.dates array
 }
 
 var displaySchedule = function(scheduleData) {
@@ -194,7 +194,7 @@ fetchSchedule(teamKey);
 fetchWeatherForecast(teamKey);
 
 // add an event listener to the team select input(s) and call handleTeamSelect()
-teamSelectEl.addEventListener('change', handleTeamSelect);
+// teamSelectEl.addEventListener('change', handleTeamSelect);
 
 // add an event listener, probably on the container around the upcoming games, to caputre the game selected by the user for drilldown
-upcomingGamesEl.addEventListener('click', handleGameClick);
+// upcomingGamesEl.addEventListener('click', handleGameClick);
