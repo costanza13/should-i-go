@@ -127,7 +127,7 @@ var handleGameClick = function(event) {
   console.log('game selected');
 };
 
-fetchSchedule(mlbTeamsData[10]);
+fetchSchedule(mlbTeamsData['yankees']);
 
 // add an event listener to the team select input(s) and call handleTeamSelect()
 // add an event listener, probably on the container around the upcoming games, to caputre the game selected by the user for drilldown
