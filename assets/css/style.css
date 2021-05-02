@@ -36,3 +36,19 @@ Nationals: #AB0003;
 .nav-wrapper {
   padding: 0 10px;
 }
+
+/* .select-wrapper, .select-wrapper input.select-dropdown {
+  width: auto;
+} */
+
+#gamesOverview {
+  padding: 10px;
+}
+
+.valign-wrapper {
+  justify-content: space-around;
+}
+
+.home-team-name, .away-team-name {
+  font-weight: bold;
+}
