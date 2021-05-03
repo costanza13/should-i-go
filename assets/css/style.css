@@ -49,9 +49,21 @@ body {
 .row .col {
   padding: 0.5rem;
 }
-/* #gamesOverview {
-  padding: 10px;
-} */
+
+.team-select-container {
+  background-color: #888;
+  color: #efefef;
+}
+
+.select-wrapper input.select-dropdown.dropdown-secondary {
+  border: none;
+  color: #efefef;
+  margin-bottom: 0;
+}
+
+.select-wrapper ul li {
+  white-space: nowrap;
+}
 
 #upcoming-games {
   display: flex;

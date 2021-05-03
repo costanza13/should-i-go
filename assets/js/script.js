@@ -33,6 +33,7 @@ const gameOverviewCardTemplate =
 
 const teamSelectMainEl = document.querySelector('#team-select-main');
 const teamSelectBarEl = document.querySelector('#team-select-bar');
+const teamSelectMenuEl = document.querySelector('#team-select-menu');
 const teamSelectEl = document.querySelector('#team-select');
 const startScreenEl = document.querySelector('#startScreen');
 const gamesOverviewEl = document.querySelector('#gamesOverview');
@@ -234,29 +235,15 @@ var displaySchedule = function (teamKey) {
     }
   }
 
-  // if we ended a row early
-  // if (gamesShown % 3) {
-  //   console.log('shown', gamesShown);
-  //   for (var j = 0; j < 3 - (gamesShown % 3); j++) {
-  //     // pad the display
-  //     var spacerDiv = document.createElement('div');
-  //     spacerDiv.setAttribute('class', 'car medium game-overview-card');
-  //     document.querySelector('#upcoming-games').appendChild(spacerDiv);
-  //   }
-  // }
-
   startScreenEl.classList.add('hide');
   while (teamSelectMainEl.childNodes.length > 0) {
-    teamSelectBarEl.appendChild(teamSelectMainEl.firstChild);
+    teamSelectMenuEl.appendChild(teamSelectMainEl.firstChild);
   }
+  teamSelectBarEl.setAttribute('style', 'background-color: '  + mlbTeamsData[teamKey].hexColor)
+  teamSelectBarEl.querySelector('.select-dropdown').classList.add('dropdown-secondary');
   gamesOverviewEl.classList.remove('hide');
 
 };
-
-// var displayForecast = function (weatherData) {
-//   // use the weather data returned from the openweather api to fill in/build out the 7 day forecast
-//   console.log('weather data', weatherData);
-// };
 
 var displayGameDayInfo = function (teamKey, index) {
   // use weather data from local storage and game details from local storage to fill in/build out game day info 
@@ -281,6 +268,7 @@ var handleGameClick = function (event) {
 };
 
 var teamOptions = [];
+// stuff to do when page is loaded
 document.addEventListener('DOMContentLoaded', (event) => {
 
   // populate team select with data from mlbTeamsData object
@@ -294,12 +282,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
   }
   var selectEls = document.querySelectorAll('select');
   var instances = M.FormSelect.init(selectEls, { width: 'auto' });
+
+  // add an event listener to the team select input(s) and call handleTeamSelect()
+  teamSelectEl.addEventListener('change', handleTeamSelect);
 })
-
-// stuff to do when page it loaded
-
-// add an event listener to the team select input(s) and call handleTeamSelect()
-teamSelectEl.addEventListener('change', handleTeamSelect);
 
 // add an event listener, probably on the container around the upcoming games, to caputre the game selected by the user for drilldown
 // upcomingGamesEl.addEventListener('click', handleGameClick);
