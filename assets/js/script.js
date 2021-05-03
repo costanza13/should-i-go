@@ -151,6 +151,7 @@ var fetchGameDetails = function (teamKey, index) {
           // append the game details to the game data at the given index in gamesData.schedule.dates
           gamesData[teamKey].schedule.games[index].details = data;
           localStorage.setItem('gamesData', JSON.stringify(gamesData));
+          // call displayGameDayInfo(), passing in the index of the game/date in gamesData.schedule.dates array
           displayGameDayInfo(teamKey, index);
         });
       } else {
@@ -163,9 +164,11 @@ var fetchGameDetails = function (teamKey, index) {
     });
 
   // does not need to return anything
-  };
-  // call displayGameDayInfo(), passing in the index of the game/date in gamesData.schedule.dates array
+};
 
+
+
+  
 var displaySchedule = function (teamKey) {
   // use the schedule data returned from the mlb stats api to fill in/build out the upcoming schedule
   // if no games, this function should display a message and hide the forecast container

@@ -50,6 +50,17 @@ Nationals: #AB0003;
   padding: 10px;
 }
 
+#upcoming-games {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.game-overview-card {
+  min-width: 320px;
+  max-width: 350px;
+}
+
 .valign-wrapper {
   justify-content: space-around;
 }
