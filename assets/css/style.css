@@ -32,6 +32,9 @@ Blue Jays: #134A8E;
 Nationals: #AB0003;
 
 */
+body {
+  font-family: 'Roboto', sans-serif;
+}
 
 .container {
   max-width: 1200px;
@@ -53,12 +56,28 @@ Nationals: #AB0003;
 #upcoming-games {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: flex-start;
 }
 
 .game-overview-card {
   min-width: 320px;
   max-width: 350px;
+  margin: .5rem;
+}
+
+.game-overview-card.card > .card-content {
+  padding: 0;
+}
+
+.game-header, .game-weather {
+  padding: 1rem;
+}
+
+.game-time {
+  background-color: #464D57;
+  color: white;
+  font-size: 120%;
+  padding: .2rem;
 }
 
 .valign-wrapper {
