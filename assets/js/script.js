@@ -11,7 +11,7 @@
 
 const OWM_KEY = 'f396f0f7fdce40c1a84f7337a2c39948';
 
-const mlbTeamsData = JSON.parse('{"angels":{"mlbStatsId":108,"name":"Los Angeles Angels","stadiumName":"Angel Stadium","stadiumLocation":"Anaheim, CA, US","isDomed":false,"hexColor":"#862633","rgbColor":"(134,38,51)"},"d-backs":{"mlbStatsId":109,"name":"Arizona Diamondbacks","stadiumName":"Chase Field","stadiumLocation":"Phoenix, AZ, US","isDomed":true,"hexColor":"#A71930","rgbColor":"(167,25,48)"},"orioles":{"mlbStatsId":110,"name":"Baltimore Orioles","stadiumName":"Oriole Park at Camden Yards","stadiumLocation":"Baltimore, MD, US","isDomed":false,"hexColor":"#DF4601","rgbColor":"(223,70,1)"},"red sox":{"mlbStatsId":111,"name":"Boston Red Sox","stadiumName":"Fenway Park","stadiumLocation":"Boston, MA, US","isDomed":false,"hexColor":"#BD3039","rgbColor":"(189, 48, 57)"},"cubs":{"mlbStatsId":112,"name":"Chicago Cubs","stadiumName":"Wrigley Field","stadiumLocation":"Chicago, IL, US","isDomed":false,"hexColor":"#0E3386","rgbColor":"(14,51,134)"},"reds":{"mlbStatsId":113,"name":"Cincinnati Reds","stadiumName":"Great American Ball Park","stadiumLocation":"Cincinnati, OH, US","isDomed":false,"hexColor":"#C6011F","rgbColor":"(198,1,31)"},"indians":{"mlbStatsId":114,"name":"Cleveland Indians","stadiumName":"Progressive Field","stadiumLocation":"Cleveland, OH, US","isDomed":false,"hexColor":"#0C2340","rgbColor":"(12,35,64)"},"rockies":{"mlbStatsId":115,"name":"Colorado Rockies","stadiumName":"Coors Field","stadiumLocation":"Denver, CO, US","isDomed":false,"hexColor":"#33006F","rgbColor":"(51,0,111)"},"tigers":{"mlbStatsId":116,"name":"Detroit Tigers","stadiumName":"Comerica Park","stadiumLocation":"Detroit, MI, US","isDomed":false,"hexColor":"#0C2340","rgbColor":"(12,35,64)"},"astros":{"mlbStatsId":117,"name":"Houston Astros","stadiumName":"Minute Maid Park","stadiumLocation":"Houston, TX, US","isDomed":true,"hexColor":"#002D62","rgbColor":"(0,45,98)"},"royals":{"mlbStatsId":118,"name":"Kansas City Royals","stadiumName":"Kauffman Stadium","stadiumLocation":"Kansas City, MO, US","isDomed":false,"hexColor":"#004687","rgbColor":"(0,70,135)"},"dodgers":{"mlbStatsId":119,"name":"Los Angeles Dodgers","stadiumName":"Dodger Stadium","stadiumLocation":"Los Angeles, CA, US","isDomed":false,"hexColor":"#005A9C","rgbColor":"(0,90,156)"},"nationals":{"mlbStatsId":120,"name":"Washington Nationals","stadiumName":"Nationals Park","stadiumLocation":"Washington, DC, US","isDomed":false,"hexColor":"#AB0003","rgbColor":"(171,0,3)"},"mets":{"mlbStatsId":121,"name":"New York Mets","stadiumName":"Citi Field","stadiumLocation":"Queens, NY, US","isDomed":false,"hexColor":"#002D72","rgbColor":"(0,45, 114)"},"athletics":{"mlbStatsId":133,"name":"Oakland Athletics","stadiumName":"Oakland Coliseum","stadiumLocation":"Oakland, CA, US","isDomed":false,"hexColor":"#003831","rgbColor":"(0,56,49)"},"pirates":{"mlbStatsId":134,"name":"Pittsburgh Pirates","stadiumName":"PNC Park","stadiumLocation":"Pittsburgh, PA, US","isDomed":false,"hexColor":"#27251F","rgbColor":"(39,37,31)"},"padres":{"mlbStatsId":135,"name":"San Diego Padres","stadiumName":"Petco Park","stadiumLocation":"San Diego, CA, US","isDomed":false,"hexColor":"#002D62","rgbColor":"(0,45,98)"},"mariners":{"mlbStatsId":136,"name":"Seattle Mariners","stadiumName":"T-Mobile Park","stadiumLocation":"Seattle, WA, US","isDomed":true,"hexColor":"#0C2C56","rgbColor":"(12,44,86)"},"giants":{"mlbStatsId":137,"name":"San Francisco Giants","stadiumName":"Oracle Park","stadiumLocation":"San Francisco, CA, US","isDomed":false,"hexColor":"#FD5A1E","rgbColor":"(253,90,30)"},"cardinals":{"mlbStatsId":138,"name":"St. Louis Cardinals","stadiumName":"Busch Stadium","stadiumLocation":"St. Louis, MO, US","isDomed":false,"hexColor":"#C41E3A","rgbColor":"(196,30,58)"},"rays":{"mlbStatsId":139,"name":"Tampa Bay Rays","stadiumName":"Tropicana Field","stadiumLocation":"St. Petersburg, FL, US","isDomed":true,"hexColor":"#092C5C","rgbColor":"(9,44,92)"},"rangers":{"mlbStatsId":140,"name":"Texas Rangers","stadiumName":"Globe Life Field","stadiumLocation":"Arlington, TX, US","isDomed":true,"hexColor":"#003278","rgbColor":"(0,50,120)"},"blue jays":{"mlbStatsId":141,"name":"Toronto Blue Jays","stadiumName":"Rogers Centre","stadiumLocation":"Toronto, CA","isDomed":false,"hexColor":"#134A8E","rgbColor":"(19,74,142)"},"twins":{"mlbStatsId":142,"name":"Minnesota Twins","stadiumName":"Target Field","stadiumLocation":"Minneapolis, MN, US","isDomed":false,"hexColor":"#002B5C","rgbColor":"(0,43,92)"},"phillies":{"mlbStatsId":143,"name":"Philadelphia Phillies","stadiumName":"Citizens Bank Park","stadiumLocation":"Philadelphia, PA, US","isDomed":false,"hexColor":"#E81828","rgbColor":"(232,24,40)"},"braves":{"mlbStatsId":144,"name":"Atlanta Braves","stadiumName":"Truist Park","stadiumLocation":"Cumberland, GA","isDomed":false,"hexColor":"#CE1141","rgbColor":"(206,17,65)"},"white sox":{"mlbStatsId":145,"name":"Chicago White Sox","stadiumName":"Guaranteed Rate Field","stadiumLocation":"Chicago, IL, US","isDomed":false,"hexColor":"#27251F","rgbColor":"(39,37,31)"},"marlins":{"mlbStatsId":146,"name":"Miami Marlins","stadiumName":"loanDepot park","stadiumLocation":"Miami, FL, US","isDomed":true,"hexColor":"#000000","rgbColor":"(0,0,0)"},"yankees":{"mlbStatsId":147,"name":"New York Yankees","stadiumName":"Yankee Stadium","stadiumLocation":"Bronx, NY, US","isDomed":false,"hexColor":"#0C2340","rgbColor":"(12,35,64)"},"brewers":{"mlbStatsId":158,"name":"Milwaukee Brewers","stadiumName":"American Family Field","stadiumLocation":"Milwaukee, WI, US","isDomed":true,"hexColor":"#12284B","rgbColor":"(18, 40, 75)"}}');
+const mlbTeamsData = JSON.parse('{"id108":{"slug":"angels","mlbStatsId":108,"name":"Los Angeles Angels","shortName":"Angels","stadiumName":"Angel Stadium","stadiumLocation":"Anaheim, CA, US","isDomed":false,"hexColor":"#862633","rgbColor":"(134,38,51)"},"id109":{"slug":"dbacks","mlbStatsId":109,"name":"Arizona Diamondbacks","shortName":"D-backs","stadiumName":"Chase Field","stadiumLocation":"Phoenix, AZ, US","isDomed":true,"hexColor":"#A71930","rgbColor":"(167,25,48)"},"id110":{"slug":"orioles","mlbStatsId":110,"name":"Baltimore Orioles","shortName":"Orioles","stadiumName":"Oriole Park at Camden Yards","stadiumLocation":"Baltimore, MD, US","isDomed":false,"hexColor":"#DF4601","rgbColor":"(223,70,1)"},"id111":{"slug":"redsox","mlbStatsId":111,"name":"Boston Red Sox","shortName":"Red Sox","stadiumName":"Fenway Park","stadiumLocation":"Boston, MA, US","isDomed":false,"hexColor":"#BD3039","rgbColor":"(189, 48, 57)"},"id112":{"slug":"cubs","mlbStatsId":112,"name":"Chicago Cubs","shortName":"Cubs","stadiumName":"Wrigley Field","stadiumLocation":"Chicago, IL, US","isDomed":false,"hexColor":"#0E3386","rgbColor":"(14,51,134)"},"id113":{"slug":"reds","mlbStatsId":113,"name":"Cincinnati Reds","shortName":"Reds","stadiumName":"Great American Ball Park","stadiumLocation":"Cincinnati, OH, US","isDomed":false,"hexColor":"#C6011F","rgbColor":"(198,1,31)"},"id114":{"slug":"indians","mlbStatsId":114,"name":"Cleveland Indians","shortName":"Indians","stadiumName":"Progressive Field","stadiumLocation":"Cleveland, OH, US","isDomed":false,"hexColor":"#0C2340","rgbColor":"(12,35,64)"},"id115":{"slug":"rockies","mlbStatsId":115,"name":"Colorado Rockies","shortName":"Rockies","stadiumName":"Coors Field","stadiumLocation":"Denver, CO, US","isDomed":false,"hexColor":"#33006F","rgbColor":"(51,0,111)"},"id116":{"slug":"tigers","mlbStatsId":116,"name":"Detroit Tigers","shortName":"Tigers","stadiumName":"Comerica Park","stadiumLocation":"Detroit, MI, US","isDomed":false,"hexColor":"#0C2340","rgbColor":"(12,35,64)"},"id117":{"slug":"astros","mlbStatsId":117,"name":"Houston Astros","shortName":"Astros","stadiumName":"Minute Maid Park","stadiumLocation":"Houston, TX, US","isDomed":true,"hexColor":"#002D62","rgbColor":"(0,45,98)"},"id118":{"slug":"royals","mlbStatsId":118,"name":"Kansas City Royals","shortName":"Royals","stadiumName":"Kauffman Stadium","stadiumLocation":"Kansas City, MO, US","isDomed":false,"hexColor":"#004687","rgbColor":"(0,70,135)"},"id119":{"slug":"dodgers","mlbStatsId":119,"name":"Los Angeles Dodgers","shortName":"Dodgers","stadiumName":"Dodger Stadium","stadiumLocation":"Los Angeles, CA, US","isDomed":false,"hexColor":"#005A9C","rgbColor":"(0,90,156)"},"id120":{"slug":"nationals","mlbStatsId":120,"name":"Washington Nationals","shortName":"Nationals","stadiumName":"Nationals Park","stadiumLocation":"Washington, DC, US","isDomed":false,"hexColor":"#AB0003","rgbColor":"(171,0,3)"},"id121":{"slug":"mets","mlbStatsId":121,"name":"New York Mets","shortName":"Mets","stadiumName":"Citi Field","stadiumLocation":"Queens, NY, US","isDomed":false,"hexColor":"#002D72","rgbColor":"(0,45, 114)"},"id133":{"slug":"athletics","mlbStatsId":133,"name":"Oakland Athletics","shortName":"Athletics","stadiumName":"Oakland Coliseum","stadiumLocation":"Oakland, CA, US","isDomed":false,"hexColor":"#003831","rgbColor":"(0,56,49)"},"id134":{"slug":"pirates","mlbStatsId":134,"name":"Pittsburgh Pirates","shortName":"Pirates","stadiumName":"PNC Park","stadiumLocation":"Pittsburgh, PA, US","isDomed":false,"hexColor":"#27251F","rgbColor":"(39,37,31)"},"id135":{"slug":"padres","mlbStatsId":135,"name":"San Diego Padres","shortName":"Padres","stadiumName":"Petco Park","stadiumLocation":"San Diego, CA, US","isDomed":false,"hexColor":"#002D62","rgbColor":"(0,45,98)"},"id136":{"slug":"mariners","mlbStatsId":136,"name":"Seattle Mariners","shortName":"Mariners","stadiumName":"T-Mobile Park","stadiumLocation":"Seattle, WA, US","isDomed":true,"hexColor":"#0C2C56","rgbColor":"(12,44,86)"},"id137":{"slug":"giants","mlbStatsId":137,"name":"San Francisco Giants","shortName":"Giants","stadiumName":"Oracle Park","stadiumLocation":"San Francisco, CA, US","isDomed":false,"hexColor":"#FD5A1E","rgbColor":"(253,90,30)"},"id138":{"slug":"cardinals","mlbStatsId":138,"name":"St. Louis Cardinals","shortName":"Cardinals","stadiumName":"Busch Stadium","stadiumLocation":"St. Louis, MO, US","isDomed":false,"hexColor":"#C41E3A","rgbColor":"(196,30,58)"},"id139":{"slug":"rays","mlbStatsId":139,"name":"Tampa Bay Rays","shortName":"Rays","stadiumName":"Tropicana Field","stadiumLocation":"St. Petersburg, FL, US","isDomed":true,"hexColor":"#092C5C","rgbColor":"(9,44,92)"},"id140":{"slug":"rangers","mlbStatsId":140,"name":"Texas Rangers","shortName":"Rangers","stadiumName":"Globe Life Field","stadiumLocation":"Arlington, TX, US","isDomed":true,"hexColor":"#003278","rgbColor":"(0,50,120)"},"id141":{"slug":"bluejays","mlbStatsId":141,"name":"Toronto Blue Jays","shortName":"Blue Jays","stadiumName":"Rogers Centre","stadiumLocation":"Toronto, CA","isDomed":false,"hexColor":"#134A8E","rgbColor":"(19,74,142)"},"id142":{"slug":"twins","mlbStatsId":142,"name":"Minnesota Twins","shortName":"Twins","stadiumName":"Target Field","stadiumLocation":"Minneapolis, MN, US","isDomed":false,"hexColor":"#002B5C","rgbColor":"(0,43,92)"},"id143":{"slug":"phillies","mlbStatsId":143,"name":"Philadelphia Phillies","shortName":"Phillies","stadiumName":"Citizens Bank Park","stadiumLocation":"Philadelphia, PA, US","isDomed":false,"hexColor":"#E81828","rgbColor":"(232,24,40)"},"id144":{"slug":"braves","mlbStatsId":144,"name":"Atlanta Braves","shortName":"Braves","stadiumName":"Truist Park","stadiumLocation":"Cumberland, GA, US","isDomed":false,"hexColor":"#CE1141","rgbColor":"(206,17,65)"},"id145":{"slug":"whitesox","mlbStatsId":145,"name":"Chicago White Sox","shortName":"White Sox","stadiumName":"Guaranteed Rate Field","stadiumLocation":"Chicago, IL, US","isDomed":false,"hexColor":"#27251F","rgbColor":"(39,37,31)"},"id146":{"slug":"marlins","mlbStatsId":146,"name":"Miami Marlins","shortName":"Marlins","stadiumName":"loanDepot park","stadiumLocation":"Miami, FL, US","isDomed":true,"hexColor":"#000000","rgbColor":"(0,0,0)"},"id147":{"slug":"yankees","mlbStatsId":147,"name":"New York Yankees","shortName":"Yankees","stadiumName":"Yankee Stadium","stadiumLocation":"Bronx, NY, US","isDomed":false,"hexColor":"#0C2340","rgbColor":"(12,35,64)"},"id158":{"slug":"brewers","mlbStatsId":158,"name":"Milwaukee Brewers","shortName":"Brewers","stadiumName":"American Family Field","stadiumLocation":"Milwaukee, WI, US","isDomed":true,"hexColor":"#12284B","rgbColor":"(18, 40, 75)"}}');
 
 const teamSelectMainEl = document.querySelector('#team-select-main');
 const teamSelectBarEl = document.querySelector('#team-select-bar');
@@ -26,16 +26,18 @@ if (!gamesDataJson) {
   gamesData = JSON.parse(gamesDataJson);
 }
 
+var userTZOffset = parseInt(dayjs().format('Z').replace(/\:.*$/, '')) * 60 * 60;
+console.log('user time zone', userTZOffset);
+
 /* 
   MLB Stats API schedule endpoint:
   https://statsapi.mlb.com/api/v1/schedule/games/?sportId=1&startDate={start_date}}&endDate={end_date}&teamId=[team_id]
 */
 var fetchSchedule = function (teamKey) {
   var teamData = mlbTeamsData[teamKey];
-  console.log('selected team', teamData);
 
   // get current date
-  var today = dayjs()
+  var today = dayjs();
   var startDate = today.format('YYYY-MM-DD');
   var endDate = today.add(13, 'day').format('YYYY-MM-DD');
 
@@ -47,7 +49,6 @@ var fetchSchedule = function (teamKey) {
         response.json().then(function (data) {
           // include the team data in the schedule data object
           var schedule = { teamData: teamData, games: [] };
-
           for (var i = 0; i < data.dates.length; i++) {
             // handle double headers
             for (var j = 0; j < data.dates[i].games.length; j++) {
@@ -63,9 +64,6 @@ var fetchSchedule = function (teamKey) {
             gamesData[teamKey].schedule = schedule;
           }
           localStorage.setItem('gamesData', JSON.stringify(gamesData));
-
-          // pass data to displaySchedule() function
-          displaySchedule(schedule);
 
           // temporary, until event listeners are hooked up to controls
           fetchWeatherForecast(teamKey);
@@ -98,7 +96,7 @@ var fetchWeatherForecast = function (teamKey) {
       if (response.ok) {
         response.json().then(function (data) {
           if (data.length) {
-            console.log('city data', data[0]);
+            // console.log('city data', data[0]);
 
             var endpoint = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + data[0].lat + '&lon=' + data[0].lon + '&exclude=minutely&units=imperial&appid=' + OWM_KEY;
 
@@ -113,10 +111,11 @@ var fetchWeatherForecast = function (teamKey) {
                   }
                   localStorage.setItem('gamesData', JSON.stringify(gamesData));
 
-                  displayForecast(data);
+                  // pass data to displaySchedule() function
+                  displaySchedule(teamKey);
                   
                   // temporary, until event listeners are hooked up to controls
-                  fetchGameDetails(teamKey, 0);
+                  // fetchGameDetails(teamKey, 0);
                 });
               } else {
                 console.log('Unable to fetch weather information.');
@@ -167,19 +166,56 @@ var fetchGameDetails = function (teamKey, index) {
   };
   // call displayGameDayInfo(), passing in the index of the game/date in gamesData.schedule.dates array
 
-var displaySchedule = function (scheduleData) {
+var displaySchedule = function (teamKey) {
   // use the schedule data returned from the mlb stats api to fill in/build out the upcoming schedule
   // if no games, this function should display a message and hide the forecast container
-  console.log('schedule data', scheduleData);
+  console.log('gamesData', gamesData);
+  var scheduleData = gamesData[teamKey].schedule;
+  var weatherData = gamesData[teamKey].weather;
+
+  // <div class="row valign-wrapper game-header">
+  //   <div class="col s5 valign-wrapper"><img id="away-team-logo" src="./assets/images/teams/rockies.svg" height="32"><span class="away-team-name"> Rockies </span></div> 
+  //   <div class="col s2 valign-wrapper"><p>at</p></div>
+  //   <div class="col s5 valign-wrapper"><span class="home-team-name"> Giants </span> <img id="home-team-logo" src="./assets/images/teams/giants.svg" height="32"></div>
+  // </div>
+  // <div class="card-panel teal lighten-2 center game-time">
+  //   <p>Tuesday, at 5:45 PM PST</p>
+  // </div>
+  // <div class="center">
+  //   <img class="weather-icon" src="./assets/images/clear-day.png">
+  //   <span class="card-title" class="weather-overview">Clear</span>
+  //   <p>According to Weather.com, it's expected to be 58° F with a 0% chance of precipitation and 13 MPH wind blowing out in San Francisco at 9:45 PM EST.</p>
+  // </div>
+
+
+
+  // for (var i = 0; i < scheduleData.games.length; i++) {
+  for (var i = 0; i < 1; i++) {
+    var gameOverviewCardEl = document.querySelector('.game-overview-card');
+    var awayId = scheduleData.games[i].teams.away.team.id;
+    var homeId = scheduleData.games[i].teams.home.team.id;
+    gameOverviewCardEl.querySelector('.away-team-name').textContent = mlbTeamsData['id' + awayId].shortName;
+    gameOverviewCardEl.querySelector('.home-team-name').textContent = mlbTeamsData['id' + homeId].shortName;
+    gameOverviewCardEl.querySelector('.away-team-logo').setAttribute('src', './assets/images/teams/' + mlbTeamsData['id' + awayId].slug + '.svg');
+    gameOverviewCardEl.querySelector('.home-team-logo').setAttribute('src', './assets/images/teams/' + mlbTeamsData['id' + homeId].slug + '.svg');
+    gameOverviewCardEl.querySelector('.game-time').innerHTML = '<p>' + dayjs(scheduleData.games[i].gameDate).subtract((userTZOffset - weatherData.timezone_offset) / 60, 'm').format('dddd, [at] h:mm A') + '</p>';
+
+    var currentDate = dayjs().format('YYYY-MM-DDT:00:00:00');
+  
+    var dayIndex = (dayjs(scheduleData.games[i].officialDate).unix() - dayjs(currentDate).unix()) / (60 * 60 * 24);
+    console.log(weatherData.daily[dayIndex].weather[0].main);
+
+  }
+
   gamesOverviewEl.classList.remove('hide');
   startScreenEl.classList.add('hide');
 
 };
 
-var displayForecast = function (weatherData) {
-  // use the weather data returned from the openweather api to fill in/build out the 7 day forecast
-  console.log('weather data', weatherData);
-};
+// var displayForecast = function (weatherData) {
+//   // use the weather data returned from the openweather api to fill in/build out the 7 day forecast
+//   console.log('weather data', weatherData);
+// };
 
 var displayGameDayInfo = function (teamKey, index) {
   // use weather data from local storage and game details from local storage to fill in/build out game day info 
@@ -191,10 +227,8 @@ var handleTeamSelect = function (event) {
   // grab the selected team id
   // do a lookup on the mlbTeamsData array
   // call fetchSchedule() passing the selected team's object
-  // call fetchWeatherForecast() passing the team's location data (city or lat/long?)
   console.log('team selected', teamKey);
   console.log('selected team data', mlbTeamsData[teamKey]);
-  console.log(teamSelectEl.parentNode);
   while (teamSelectMainEl.childNodes.length > 0) {
     teamSelectBarEl.appendChild(teamSelectMainEl.firstChild);
   }

@@ -2,7 +2,7 @@ var mlbTeams = {};
 
 const stadiums = {
   dbacks:	{city: 'Phoenix, AZ, US', hexColor: '#A71930', rgbColor: '(167,25,48)', domed: true},
-  braves: {city: 'Cumberland, GA', hexColor: '#CE1141', rgbColor: '(206,17,65)', domed: false},
+  braves: {city: 'Cumberland, GA, US', hexColor: '#CE1141', rgbColor: '(206,17,65)', domed: false},
   orioles: {city: 'Baltimore, MD, US', hexColor: '#DF4601', rgbColor: '(223,70,1)', domed: false},
   redsox: {city: 'Boston, MA, US', hexColor: '#BD3039', rgbColor: '(189, 48, 57)', domed: false},
   cubs: {city: 'Chicago, IL, US', hexColor: '#0E3386', rgbColor: '(14,51,134)', domed: false},
@@ -43,12 +43,14 @@ var getMlbTeamData = function() {
           var team = data.teams[i];
           if (team.league.id == 103 || team.league.id == 104) {
             // console.log(team.teamName);
-            var key = team.teamName.toLowerCase();
-            var stadiumKey = key.replace(' ', '').replace('-', '');
+            var key = 'id' + team.id;
+            var stadiumKey = team.teamName.toLowerCase().replace(' ', '').replace('-', '');
             mlbTeams[key] = 
               {
+                slug: stadiumKey,
                 mlbStatsId: team.id,
                 name: team.name,
+                shortName: team.teamName,
                 stadiumName: team.venue.name,
                 stadiumLocation:  stadiums[stadiumKey].city,
                 isDomed: stadiums[stadiumKey].domed,

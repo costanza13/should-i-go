@@ -33,6 +33,11 @@ Nationals: #AB0003;
 
 */
 
+.container {
+  max-width: 1200px;
+  width: 90%;
+}
+
 .nav-wrapper {
   padding: 0 10px;
 }
