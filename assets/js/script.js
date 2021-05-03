@@ -16,9 +16,9 @@ const mlbTeamsData = JSON.parse('{"id108":{"slug":"angels","mlbStatsId":108,"nam
 const gameOverviewCardTemplate = 
   '<div class="card-content">' +
   '  <div class="row valign-wrapper game-header">' +
-  '    <div class="col s5 valign-wrapper"><img class="away-team-logo" src="" height="32"><span class="away-team-name"></span></div>' +
+  '    <div class="col s5 valign-wrapper"><img class="away-team-logo" src="" height="32"><p class="away-team-name"></p></div>' +
   '    <div class="col s2 valign-wrapper"><p>at</p></div>' +
-  '    <div class="col s5 valign-wrapper"><span class="home-team-name"></span> <img class="home-team-logo" src="" height="32"></div>' +
+  '    <div class="col s5 valign-wrapper"><p class="home-team-name"></p><img class="home-team-logo" src="" height="32"></div>' +
   '  </div>' +
   '  <div class="center-align game-time">' +
   '  </div>' +
@@ -27,6 +27,7 @@ const gameOverviewCardTemplate =
   '    <span class="card-title weather-overview"></span>' +
   '    <p class="left-align weather-description"></p>' +
   '  </div>' +
+  '  <div class="center"><a herf="" class="waves-effect waves-light btn tickets-button" target="_blank"><i class="material-icons left">panorama_horizontal</i>Buy Tickets</a></div>'
   '</div>';
 
 
@@ -130,9 +131,6 @@ var fetchWeatherForecast = function (teamKey) {
 
                   // pass data to displaySchedule() function
                   displaySchedule(teamKey);
-                  
-                  // temporary, until event listeners are hooked up to controls
-                  // fetchGameDetails(teamKey, 0);
                 });
               } else {
                 console.log('Unable to fetch weather information.');
@@ -192,14 +190,15 @@ var buildScheduleOverviewCard = function (gameData, weatherData) {
   var gameOverviewCardEl = document.createElement('div');
   gameOverviewCardEl.setAttribute('class', 'card medium game-overview-card');
   gameOverviewCardEl.innerHTML = gameOverviewCardTemplate.slice(0);
-  gameOverviewCardEl.querySelector('.away-team-name').textContent = mlbTeamsData['id' + awayId].shortName;
-  gameOverviewCardEl.querySelector('.home-team-name').textContent = mlbTeamsData['id' + homeId].shortName;
+  gameOverviewCardEl.querySelector('.away-team-name').innerHTML = mlbTeamsData['id' + awayId].shortName + '<span class="record"><br>(' + gameData.teams.away.leagueRecord.wins + ' - ' + gameData.teams.away.leagueRecord.losses + ')</span>';
+  gameOverviewCardEl.querySelector('.home-team-name').innerHTML = mlbTeamsData['id' + homeId].shortName + '<span class="record"><br>(' + gameData.teams.home.leagueRecord.wins + ' - ' + gameData.teams.home.leagueRecord.losses + ')</span>';
   gameOverviewCardEl.querySelector('.away-team-logo').setAttribute('src', './assets/images/teams/' + mlbTeamsData['id' + awayId].slug + '.svg');
   gameOverviewCardEl.querySelector('.home-team-logo').setAttribute('src', './assets/images/teams/' + mlbTeamsData['id' + homeId].slug + '.svg');
   gameOverviewCardEl.querySelector('.game-time').innerHTML = '<p>' + gameData.gameTimeLocal + '</p>';
   gameOverviewCardEl.querySelector('.weather-icon').setAttribute('src', 'https://openweathermap.org/img/wn/' + weatherData.weather[0].icon + '@2x.png');
   gameOverviewCardEl.querySelector('.weather-overview').textContent = weatherData.weather[0].main;
   gameOverviewCardEl.querySelector('.weather-description').innerHTML = 'High of ' + Math.round(weatherData.temp.max) + '&deg;F with an evening temperature of ' + Math.round(weatherData.temp.eve) + '&deg;F and a ' + (weatherData.pop * 100) + '% chance of precipitation. The UV index will peak at ' + weatherData.uvi;
+  gameOverviewCardEl.querySelector('.tickets-button').setAttribute('href', 'https://www.mlb.com/' + mlbTeamsData['id' + homeId].slug + '/tickets');
 
   return gameOverviewCardEl;
 };
