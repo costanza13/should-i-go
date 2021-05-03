@@ -239,7 +239,7 @@ var displaySchedule = function (teamKey) {
   while (teamSelectMainEl.childNodes.length > 0) {
     teamSelectMenuEl.appendChild(teamSelectMainEl.firstChild);
   }
-  teamSelectBarEl.setAttribute('style', 'background-color: '  + mlbTeamsData[teamKey].hexColor)
+  teamSelectBarEl.querySelector('#team-select-menu').setAttribute('style', 'background-color: '  + mlbTeamsData[teamKey].hexColor)
   teamSelectBarEl.querySelector('.select-dropdown').classList.add('dropdown-secondary');
   gamesOverviewEl.classList.remove('hide');
 
