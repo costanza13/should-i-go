@@ -197,7 +197,7 @@ var buildScheduleOverviewCard = function (gameData, weatherData) {
   gameOverviewCardEl.querySelector('.game-time').innerHTML = '<p>' + gameData.gameTimeLocal + '</p>';
   gameOverviewCardEl.querySelector('.weather-icon').setAttribute('src', 'https://openweathermap.org/img/wn/' + weatherData.weather[0].icon + '@2x.png');
   gameOverviewCardEl.querySelector('.weather-overview').textContent = weatherData.weather[0].main;
-  gameOverviewCardEl.querySelector('.weather-description').innerHTML = 'High of ' + Math.round(weatherData.temp.max) + '&deg;F with an evening temperature of ' + Math.round(weatherData.temp.eve) + '&deg;F and a ' + (weatherData.pop * 100) + '% chance of precipitation. The UV index will peak at ' + weatherData.uvi;
+  gameOverviewCardEl.querySelector('.weather-description').innerHTML = 'High of ' + Math.round(weatherData.temp.max) + '&deg;F with an evening temperature of ' + Math.round(weatherData.temp.eve) + '&deg;F and a ' + Math.round(weatherData.pop * 100) + '% chance of precipitation. The UV index will peak at ' + weatherData.uvi;
   gameOverviewCardEl.querySelector('.tickets-button').setAttribute('href', 'https://www.mlb.com/' + mlbTeamsData['id' + homeId].slug + '/tickets');
 
   return gameOverviewCardEl;
