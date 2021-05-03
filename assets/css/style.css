@@ -1,5 +1,4 @@
 /*
-
 Red Sox: #BD3039;
 Diamondbacks: #A71930;
 Braves: #13274F;
@@ -30,8 +29,8 @@ Rays: #092C5C;
 Rangers: #003278;
 Blue Jays: #134A8E;
 Nationals: #AB0003;
-
 */
+
 body {
   font-family: 'Roboto', sans-serif;
   font-weight: 300;
@@ -52,8 +51,9 @@ body {
 }
 
 #team-select-bar {
+  margin-top: 0.5rem;
   background-color: #fff;
-  border-radius: 8px;
+  border-radius: 3px;
   color: #efefef;
 }
 
@@ -61,6 +61,7 @@ body {
   background-color: #888;
   padding: 0 0.5rem;
   margin: 0.5rem;
+  border-radius: 3px;
 }
 
 .select-wrapper input.select-dropdown.dropdown-secondary {
@@ -124,8 +125,19 @@ body {
   padding: 5px 10px;
 }
 
+#startScreen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10%;
+}
+
 @media screen and (min-width: 480px) {
   .game-overview-card {
-    margin: .5rem 1rem;
+    margin: .5rem 1.5rem;
   }
+
+  /* .brand-logo {
+    padding-left: 18%;
+  } */
 }
