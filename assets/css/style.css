@@ -1,0 +1,112 @@
+/*
+
+Red Sox: #BD3039;
+Diamondbacks: #A71930;
+Braves: #13274F;
+Orioles: #DF4601;
+Cubs: #0E3386;
+White Sox: #27251F;
+Reds: #C6011F;
+Indians: #0C2340;
+Rockies: #33006F;
+Tigers: #0C2340;
+Astros: #002D62;
+Royals: #004687;
+Angels: #BA0021;
+Dodgers: #005A9C;
+Marlins: #000000;
+Brewers: #12284B;
+Twins: #002B5C;
+Mets: #002D72;
+Yankeez: #0C2340;
+Athletics: #003831;
+Phillies: #E81828;
+Pirates: #FFC72C;
+Cardinals: #C41E3A;
+Padres: #2F241D;
+Giants: #FD5A1E;
+Mariners: #0C2C56;
+Rays: #092C5C;
+Rangers: #003278;
+Blue Jays: #134A8E;
+Nationals: #AB0003;
+
+*/
+body {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+}
+
+.container {
+  max-width: 1200px;
+  width: 90%;
+}
+
+.nav-wrapper {
+  padding: 0 10px;
+}
+
+.row .col {
+  padding: 0.5rem;
+}
+
+.team-select-container {
+  background-color: #888;
+  color: #efefef;
+}
+
+.select-wrapper input.select-dropdown.dropdown-secondary {
+  border: none;
+  color: #efefef;
+  margin-bottom: 0;
+}
+
+.select-wrapper ul li {
+  white-space: nowrap;
+}
+
+#upcoming-games {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.game-overview-card {
+  min-width: 320px;
+  max-width: 350px;
+  margin: .5rem auto;
+}
+
+.game-overview-card.card > .card-content {
+  padding: 0;
+}
+
+.game-header {
+  margin-bottom: 0;
+  padding: 1rem;
+}
+
+.game-weather {
+  margin-bottom: 0;
+  padding: 0.5rem;
+}
+
+.game-time {
+  background-color: #464D57;
+  color: white;
+  font-size: 120%;
+  padding: .2rem;
+}
+
+.valign-wrapper {
+  justify-content: space-around;
+}
+
+.home-team-name, .away-team-name {
+  font-weight: 500;
+  text-align: center;
+}
+
+.record {
+  font-size: 80%;
+}
