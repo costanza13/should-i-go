@@ -16,16 +16,16 @@ const mlbTeamsData = JSON.parse('{"id108":{"slug":"angels","mlbStatsId":108,"nam
 const gameOverviewCardTemplate = 
   '<div class="card-content">' +
   '  <div class="row valign-wrapper game-header">' +
-  '    <div class="col s5 valign-wrapper"><img class="away-team-logo" src="" height="32"><p class="away-team-name"></p></div>' +
+  '    <div class="col s5 valign-wrapper"><img class="away-team-logo" src="" height="32" /><p class="away-team-name"></p></div>' +
   '    <div class="col s2 valign-wrapper"><p>at</p></div>' +
-  '    <div class="col s5 valign-wrapper"><p class="home-team-name"></p><img class="home-team-logo" src="" height="32"></div>' +
+  '    <div class="col s5 valign-wrapper"><p class="home-team-name"></p><img class="home-team-logo" src="" height="32" /></div>' +
   '  </div>' +
   '  <div class="center-align game-time">' +
   '  </div>' +
   '  <div class="center-align game-weather">' +
   '    <img class="weather-icon" src="">' +
   '    <span class="card-title weather-overview"></span>' +
-  '    <p class="left-align weather-description"></p>' +
+  '    <p class="center-align weather-description"></p>' +
   '  </div>' +
   '  <div class="center"><a herf="" class="waves-effect waves-light btn tickets-button" target="_blank"><i class="material-icons left">panorama_horizontal</i>Buy Tickets</a></div>'
   '</div>';
@@ -38,15 +38,35 @@ const teamSelectEl = document.querySelector('#team-select');
 const startScreenEl = document.querySelector('#startScreen');
 const gamesOverviewEl = document.querySelector('#gamesOverview');
 
-var gamesDataJson = localStorage.getItem('gamesData');
-if (!gamesDataJson) {
-  gamesData = {};
-} else {
-  gamesData = JSON.parse(gamesDataJson);
-}
+const today = dayjs();
 
-var userTZOffset = parseInt(dayjs().format('Z').replace(/\:.*$/, '')) * 60 * 60;
-console.log('user time zone', userTZOffset);
+const userTZOffset = parseInt(dayjs().format('Z').replace(/\:.*$/, '')) * 60 * 60;
+// console.log('user time zone', userTZOffset);
+
+var loadGamesData = function() {
+  var gamesDataJson = localStorage.getItem('gamesData');
+  if (!gamesDataJson) {
+    gamesData = { validDateStamp : today.format('YYYY-MM-DD') };
+  } else {
+    gamesData = JSON.parse(gamesDataJson);
+    if (!gamesData.validDateStamp || gamesData.validDateStamp != today.format('YYYY-MM-DD')) {
+      gamesData = { validDateStamp : today.format('YYYY-MM-DD') };
+    }
+  }
+  return gamesData;
+};
+
+var updateGamesData = function(teamKey, newKey, newData) {
+  if (!gamesData.validDateStamp || gamesData.validDateStamp != today.format('YYYY-MM-DD')) {
+    gamesData = { validDateStamp : today.format('YYYY-MM-DD') };
+  }
+  if (!gamesData[teamKey]) {
+    gamesData[teamKey] = { [newKey]: newData };
+  } else {
+    gamesData[teamKey][newKey] = newData;
+  }
+  localStorage.setItem('gamesData', JSON.stringify(gamesData));
+}
 
 /* 
   MLB Stats API schedule endpoint:
@@ -54,9 +74,9 @@ console.log('user time zone', userTZOffset);
 */
 var fetchSchedule = function (teamKey) {
   var teamData = mlbTeamsData[teamKey];
+  gamesData.lastTeamKey = teamKey;
 
   // get current date
-  var today = dayjs();
   var startDate = today.format('YYYY-MM-DD');
   var endDate = today.add(13, 'day').format('YYYY-MM-DD');
 
@@ -71,20 +91,20 @@ var fetchSchedule = function (teamKey) {
           for (var i = 0; i < data.dates.length; i++) {
             // handle double headers
             for (var j = 0; j < data.dates[i].games.length; j++) {
-              if (data.dates[i].games[j].teams.home.team.id === teamData.mlbStatsId) {
-                schedule.games.push(data.dates[i].games[j]);
+              var gameData = data.dates[i].games[j];
+              // console.log('fetched game', gameData);
+              if (gameData.teams.home.team.id === teamData.mlbStatsId) {
+                // check if game is postponed
+                if (gameData.status.detailedState != 'Postponed') {
+                  // console.log(gameData.gameTimeLocal);
+                  schedule.games.push(gameData);
+                }
               }
             }
           }
           // save schedule data in local storage for quick retrieval
-          if (!gamesData[teamKey]) {
-            gamesData[teamKey] = { schedule: schedule };
-          } else {
-            gamesData[teamKey].schedule = schedule;
-          }
-          localStorage.setItem('gamesData', JSON.stringify(gamesData));
+          updateGamesData(teamKey, 'schedule', schedule);
 
-          // temporary, until event listeners are hooked up to controls
           fetchWeatherForecast(teamKey);
         });
       } else {
@@ -123,12 +143,7 @@ var fetchWeatherForecast = function (teamKey) {
               if (response.ok) {
                 response.json().then(function (data) {
                   // store weather data in local storage to use in the hourly forecast for game day
-                  if (!gamesData[teamKey]) {
-                    gamesData[teamKey] = { weather: data };
-                  } else {
-                    gamesData[teamKey].weather = data;
-                  }
-                  localStorage.setItem('gamesData', JSON.stringify(gamesData));
+                  updateGamesData(teamKey, 'weather', data);
 
                   // pass data to displaySchedule() function
                   displaySchedule(teamKey);
@@ -156,7 +171,7 @@ var fetchWeatherForecast = function (teamKey) {
 };
 
 var fetchGameDetails = function (teamKey, index) {
-  console.log('game data', gamesData[teamKey].schedule.games[index]);
+  // console.log('game data', gamesData[teamKey].schedule.games[index]);
   // use the passed in index to grab the gameDetailsUri at gamesData.schedule.dates[index].games[0].link
   // fetch game details from mlb stats api using the gameDetailsUri
   var endpoint = 'https://statsapi.mlb.com/' + gamesData[teamKey].schedule.games[index].link;
@@ -164,11 +179,10 @@ var fetchGameDetails = function (teamKey, index) {
     .then(function (response) {
       if (response.ok) {
         response.json().then(function (data) {
+
           // append the game details to the game data at the given index in gamesData.schedule.dates
           gamesData[teamKey].schedule.games[index].details = data;
           localStorage.setItem('gamesData', JSON.stringify(gamesData));
-          // call displayGameDayInfo(), passing in the index of the game/date in gamesData.schedule.dates array
-          displayGameDayInfo(teamKey, index);
         });
       } else {
         console.error('Unable to fetch game information.');
@@ -183,8 +197,8 @@ var fetchGameDetails = function (teamKey, index) {
 };
 
 var buildScheduleOverviewCard = function (gameData, weatherData) {
-  console.log('game', gameData);
-  console.log('weather', weatherData);
+  // console.log('game', gameData);
+  // console.log('weather', weatherData);
   var awayId = gameData.teams.away.team.id;
   var homeId = gameData.teams.home.team.id;
 
@@ -195,10 +209,23 @@ var buildScheduleOverviewCard = function (gameData, weatherData) {
   gameOverviewCardEl.querySelector('.home-team-name').innerHTML = mlbTeamsData['id' + homeId].shortName + '<span class="record"><br>(' + gameData.teams.home.leagueRecord.wins + ' - ' + gameData.teams.home.leagueRecord.losses + ')</span>';
   gameOverviewCardEl.querySelector('.away-team-logo').setAttribute('src', './assets/images/teams/' + mlbTeamsData['id' + awayId].slug + '.svg');
   gameOverviewCardEl.querySelector('.home-team-logo').setAttribute('src', './assets/images/teams/' + mlbTeamsData['id' + homeId].slug + '.svg');
-  gameOverviewCardEl.querySelector('.game-time').innerHTML = '<p>' + gameData.gameTimeLocal + '</p>';
+  gameOverviewCardEl.querySelector('.game-time').innerHTML = '<p>' + gameData.gameDateLocal + ' @ ' + gameData.gameTimeLocal + '</p>';
   gameOverviewCardEl.querySelector('.weather-icon').setAttribute('src', 'https://openweathermap.org/img/wn/' + weatherData.weather[0].icon + '@2x.png');
   gameOverviewCardEl.querySelector('.weather-overview').textContent = weatherData.weather[0].main;
-  gameOverviewCardEl.querySelector('.weather-description').innerHTML = 'High of ' + Math.round(weatherData.temp.max) + '&deg;F with an evening temperature of ' + Math.round(weatherData.temp.eve) + '&deg;F and a ' + Math.round(weatherData.pop * 100) + '% chance of precipitation. The UV index will peak at ' + weatherData.uvi;
+  gameOverviewCardEl.querySelector('.weather-overview').setAttribute('title', weatherData.weather[0].description);
+
+  var weatherDescription = 'High of ' + Math.round(weatherData.temp.max) + '&deg;F with ';
+  if (gameData.startHourLocal < 16) {
+    weatherDescription += 'a daytime temperature of ' + Math.round(weatherData.temp.day) + '&deg;F';
+  } else {
+    weatherDescription += 'an evening temperature of ' + Math.round(weatherData.temp.eve) + '&deg;F';  
+  }
+  if (weatherData.weather[0].id >= 300 &&  weatherData.weather[0].id < 700) {
+    weatherDescription += ' and a ' + Math.round(weatherData.pop * 100) + '% chance of ' + weatherData.weather[0].description.replace('thunderstorm', 'thunderstorms');
+  }
+  weatherDescription += '. The UV index will peak at ' + weatherData.uvi + '. <a title="full weather report" href="https://darksky.net/forecast/' + gamesData['id' + homeId].weather.lat + ',' + gamesData['id' + homeId].weather.lon + '/us12/en" target="_blank"><i class="material-icons" style="font-size:85%">open_in_new</i></a>';
+
+  gameOverviewCardEl.querySelector('.weather-description').innerHTML = weatherDescription;
   gameOverviewCardEl.querySelector('.tickets-button').setAttribute('href', 'https://www.mlb.com/' + mlbTeamsData['id' + homeId].slug + '/tickets');
 
   return gameOverviewCardEl;
@@ -207,7 +234,7 @@ var buildScheduleOverviewCard = function (gameData, weatherData) {
 var displaySchedule = function (teamKey) {
   // use the schedule data returned from the mlb stats api to fill in/build out the upcoming schedule
   // if no games, this function should display a message and hide the forecast container
-  console.log('gamesData', gamesData);
+  // console.log('gamesData', gamesData);
   document.querySelector('#upcoming-games').innerHTML = '';
 
   var currentDate = dayjs().format('YYYY-MM-DDT:00:00:00');
@@ -216,10 +243,17 @@ var displaySchedule = function (teamKey) {
 
   for (var i = 0; i < gamesData[teamKey].schedule.games.length; i++) {
     var gameData = gamesData[teamKey].schedule.games[i];
-    gameData.gameTimeLocal = dayjs(gameData.gameDate).subtract((userTZOffset - gamesData[teamKey].weather.timezone_offset) / 60, 'm').format('dddd, M/D [@] h:mm A')
     var dayIndex = (dayjs(gameData.officialDate).unix() - dayjs(currentDate).unix()) / (60 * 60 * 24);
     var weatherData = gamesData[teamKey].weather.daily[dayIndex];
     if (weatherData) {
+      // calculate just the start time (not date & time) from the UTC 'gameDate' value
+      var localDateTimeDjs = dayjs(gameData.gameDate).subtract((userTZOffset - gamesData[teamKey].weather.timezone_offset) / 60, 'm');
+      gameData.gameTimeLocal = localDateTimeDjs.format('h:mm A')
+      gameData.startHourLocal = parseInt(localDateTimeDjs.format('H'));
+      gameData.gameDateLocal = dayjs(gameData.officialDate + 'T23:00:00Z').format('dddd, M/D');
+      gamesData[teamKey].schedule.games[i] = gameData;
+      updateGamesData(teamKey, 'schedule', gamesData[teamKey].schedule);
+
       document.querySelector('#upcoming-games').appendChild(buildScheduleOverviewCard(gameData, weatherData));
       gamesShown++;
     } else {
@@ -247,7 +281,7 @@ var displaySchedule = function (teamKey) {
 
 var displayGameDayInfo = function (teamKey, index) {
   // use weather data from local storage and game details from local storage to fill in/build out game day info 
-  console.log('game day info', gamesData[teamKey].schedule.games[index].details);
+  // console.log('game day info', gamesData[teamKey].schedule.games[index].details);
 };
 
 var handleTeamSelect = function (event) {
@@ -255,8 +289,8 @@ var handleTeamSelect = function (event) {
   // grab the selected team id
   // do a lookup on the mlbTeamsData array
   // call fetchSchedule() passing the selected team's object
-  console.log('team selected', teamKey);
-  console.log('selected team data', mlbTeamsData[teamKey]);
+  // console.log('team selected', teamKey);
+  // console.log('selected team data', mlbTeamsData[teamKey]);
   fetchSchedule(teamKey);
 };
 
@@ -267,7 +301,7 @@ var handleGameClick = function (event) {
   console.log('game selected');
 };
 
-var teamOptions = [];
+var gamesData = loadGamesData();
 // stuff to do when page is loaded
 document.addEventListener('DOMContentLoaded', (event) => {
 
@@ -277,15 +311,19 @@ document.addEventListener('DOMContentLoaded', (event) => {
   for (var i = 0; i < teamsArr.length; i++) {
     var teamOptionEl = document.createElement('option');
     teamOptionEl.setAttribute('value', teamsArr[i][0]);
-    teamOptionEl.innerHTML = teamsArr[i][1].name + '&nbsp;&nbsp;';
+    if (gamesData.lastTeamKey && gamesData.lastTeamKey == teamsArr[i][0]) {
+      teamOptionEl.setAttribute('selected', true);
+    }
+    teamOptionEl.innerHTML = teamsArr[i][1].name;
     teamSelectEl.appendChild(teamOptionEl);
   }
   var selectEls = document.querySelectorAll('select');
   var instances = M.FormSelect.init(selectEls, { width: 'auto' });
 
+  if (gamesData.lastTeamKey) {
+    fetchSchedule(gamesData.lastTeamKey);
+  }
+
   // add an event listener to the team select input(s) and call handleTeamSelect()
   teamSelectEl.addEventListener('change', handleTeamSelect);
-})
-
-// add an event listener, probably on the container around the upcoming games, to caputre the game selected by the user for drilldown
-// upcomingGamesEl.addEventListener('click', handleGameClick);
+});

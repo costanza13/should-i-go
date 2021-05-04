@@ -1,5 +1,4 @@
 /*
-
 Red Sox: #BD3039;
 Diamondbacks: #A71930;
 Braves: #13274F;
@@ -30,11 +29,15 @@ Rays: #092C5C;
 Rangers: #003278;
 Blue Jays: #134A8E;
 Nationals: #AB0003;
-
 */
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: 'Roboto', sans-serif;
   font-weight: 300;
+  background-color: #e5e5e5;
 }
 
 .container {
@@ -50,14 +53,22 @@ body {
   padding: 0.5rem;
 }
 
-.team-select-container {
+#team-select-bar {
   background-color: #888;
-  color: #efefef;
+  display: flex;
+  margin-top: 0.5rem;
+  border-radius: 3px;
+}
+
+#team-select-main, #team-select-menu {
+  background-color: #fff;
+  padding: 0 0.5rem;
+  margin: 0.5rem;
+  border-radius: 3px;
 }
 
 .select-wrapper input.select-dropdown.dropdown-secondary {
   border: none;
-  color: #efefef;
   margin-bottom: 0;
 }
 
@@ -72,9 +83,10 @@ body {
 }
 
 .game-overview-card {
+  border-radius: 8px;
   min-width: 320px;
   max-width: 350px;
-  margin: .5rem auto;
+  margin: 1rem auto;
 }
 
 .game-overview-card.card > .card-content {
@@ -86,11 +98,6 @@ body {
   padding: 1rem;
 }
 
-.game-weather {
-  margin-bottom: 0;
-  padding: 0.5rem;
-}
-
 .game-time {
   background-color: #464D57;
   color: white;
@@ -98,7 +105,12 @@ body {
   padding: .2rem;
 }
 
-.valign-wrapper {
+.game-weather {
+  margin-bottom: 0;
+  padding: 0;
+}
+
+.game-header, .game-header > .col {
   justify-content: space-around;
 }
 
@@ -109,4 +121,26 @@ body {
 
 .record {
   font-size: 80%;
+}
+
+.weather-description {
+  height: 5.5rem;
+  padding: 10px 20px;
+}
+
+#startScreen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10%;
+}
+
+@media screen and (min-width: 480px) {
+  .game-overview-card {
+    margin: 1rem 1.5rem;
+  }
+
+  /* .brand-logo {
+    padding-left: 18%;
+  } */
 }
