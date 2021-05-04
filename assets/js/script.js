@@ -289,7 +289,6 @@ var handleGameClick = function (event) {
 };
 
 var gamesData = loadGamesData();
-console.log(gamesData);
 // stuff to do when page is loaded
 document.addEventListener('DOMContentLoaded', (event) => {
 
@@ -299,7 +298,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
   for (var i = 0; i < teamsArr.length; i++) {
     var teamOptionEl = document.createElement('option');
     teamOptionEl.setAttribute('value', teamsArr[i][0]);
-    teamOptionEl.innerHTML = teamsArr[i][1].name + '&nbsp;&nbsp;';
+    if (gamesData.lastTeamKey && gamesData.lastTeamKey == teamsArr[i][0]) {
+      teamOptionEl.setAttribute('selected', true);
+    }
+    teamOptionEl.innerHTML = teamsArr[i][1].name;
     teamSelectEl.appendChild(teamOptionEl);
   }
   var selectEls = document.querySelectorAll('select');
@@ -311,4 +313,4 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
   // add an event listener to the team select input(s) and call handleTeamSelect()
   teamSelectEl.addEventListener('change', handleTeamSelect);
-})
+});
