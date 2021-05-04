@@ -16,9 +16,9 @@ const mlbTeamsData = JSON.parse('{"id108":{"slug":"angels","mlbStatsId":108,"nam
 const gameOverviewCardTemplate = 
   '<div class="card-content">' +
   '  <div class="row valign-wrapper game-header">' +
-  '    <div class="col s5 valign-wrapper"><img class="away-team-logo" src="" height="32"><p class="away-team-name"></p></div>' +
+  '    <div class="col s5 valign-wrapper"><img class="away-team-logo" src="" height="32" /><p class="away-team-name"></p></div>' +
   '    <div class="col s2 valign-wrapper"><p>at</p></div>' +
-  '    <div class="col s5 valign-wrapper"><p class="home-team-name"></p><img class="home-team-logo" src="" height="32"></div>' +
+  '    <div class="col s5 valign-wrapper"><p class="home-team-name"></p><img class="home-team-logo" src="" height="32" /></div>' +
   '  </div>' +
   '  <div class="center-align game-time">' +
   '  </div>' +
@@ -260,7 +260,7 @@ var displaySchedule = function (teamKey) {
   while (teamSelectMainEl.childNodes.length > 0) {
     teamSelectMenuEl.appendChild(teamSelectMainEl.firstChild);
   }
-  teamSelectBarEl.querySelector('#team-select-menu').setAttribute('style', 'background-color: '  + mlbTeamsData[teamKey].hexColor)
+  teamSelectBarEl.setAttribute('style', 'background-color: '  + mlbTeamsData[teamKey].hexColor)
   teamSelectBarEl.querySelector('.select-dropdown').classList.add('dropdown-secondary');
   gamesOverviewEl.classList.remove('hide');
 
