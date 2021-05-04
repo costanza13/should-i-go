@@ -124,6 +124,7 @@ body {
 }
 
 .weather-description {
+  height: 5.5rem;
   padding: 10px 20px;
 }
 

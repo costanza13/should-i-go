@@ -25,7 +25,7 @@ const gameOverviewCardTemplate =
   '  <div class="center-align game-weather">' +
   '    <img class="weather-icon" src="">' +
   '    <span class="card-title weather-overview"></span>' +
-  '    <p class="left-align weather-description"></p>' +
+  '    <p class="center-align weather-description"></p>' +
   '  </div>' +
   '  <div class="center"><a herf="" class="waves-effect waves-light btn tickets-button" target="_blank"><i class="material-icons left">panorama_horizontal</i>Buy Tickets</a></div>'
   '</div>';
@@ -209,13 +209,23 @@ var buildScheduleOverviewCard = function (gameData, weatherData) {
   gameOverviewCardEl.querySelector('.home-team-name').innerHTML = mlbTeamsData['id' + homeId].shortName + '<span class="record"><br>(' + gameData.teams.home.leagueRecord.wins + ' - ' + gameData.teams.home.leagueRecord.losses + ')</span>';
   gameOverviewCardEl.querySelector('.away-team-logo').setAttribute('src', './assets/images/teams/' + mlbTeamsData['id' + awayId].slug + '.svg');
   gameOverviewCardEl.querySelector('.home-team-logo').setAttribute('src', './assets/images/teams/' + mlbTeamsData['id' + homeId].slug + '.svg');
-  gameOverviewCardEl.querySelector('.game-time').innerHTML = '<p>' + gameData.gameTimeLocal + '</p>';
+  gameOverviewCardEl.querySelector('.game-time').innerHTML = '<p>' + gameData.gameDateLocal + ' @ ' + gameData.gameTimeLocal + '</p>';
   gameOverviewCardEl.querySelector('.weather-icon').setAttribute('src', 'https://openweathermap.org/img/wn/' + weatherData.weather[0].icon + '@2x.png');
   gameOverviewCardEl.querySelector('.weather-overview').textContent = weatherData.weather[0].main;
-  gameOverviewCardEl.querySelector('.weather-description').innerHTML = 'High of ' + Math.round(weatherData.temp.max) + '&deg;F with an evening temperature of ' + 
-                                                                        Math.round(weatherData.temp.eve) + '&deg;F and a ' + Math.round(weatherData.pop * 100) + 
-                                                                        '% chance of precipitation. The UV index will peak at ' + weatherData.uvi +
-                                                                        '. <em><a href="https://darksky.net/forecast/' + gamesData['id' + homeId].weather.lat + ',' + gamesData['id' + homeId].weather.lon + '/us12/en" target="_blank">full forecast...</a></em>';
+  gameOverviewCardEl.querySelector('.weather-overview').setAttribute('title', weatherData.weather[0].description);
+
+  var weatherDescription = 'High of ' + Math.round(weatherData.temp.max) + '&deg;F with ';
+  if (gameData.startHourLocal < 16) {
+    weatherDescription += 'a daytime temperature of ' + Math.round(weatherData.temp.day) + '&deg;F';
+  } else {
+    weatherDescription += 'an evening temperature of ' + Math.round(weatherData.temp.eve) + '&deg;F';  
+  }
+  if (weatherData.weather[0].id >= 300 &&  weatherData.weather[0].id < 700) {
+    weatherDescription += ' and a ' + Math.round(weatherData.pop * 100) + '% chance of ' + weatherData.weather[0].description.replace('thunderstorm', 'thunderstorms');
+  }
+  weatherDescription += '. The UV index will peak at ' + weatherData.uvi + '. <a title="full weather report" href="https://darksky.net/forecast/' + gamesData['id' + homeId].weather.lat + ',' + gamesData['id' + homeId].weather.lon + '/us12/en" target="_blank"><i class="material-icons" style="font-size:85%">open_in_new</i></a>';
+
+  gameOverviewCardEl.querySelector('.weather-description').innerHTML = weatherDescription;
   gameOverviewCardEl.querySelector('.tickets-button').setAttribute('href', 'https://www.mlb.com/' + mlbTeamsData['id' + homeId].slug + '/tickets');
 
   return gameOverviewCardEl;
@@ -237,9 +247,12 @@ var displaySchedule = function (teamKey) {
     var weatherData = gamesData[teamKey].weather.daily[dayIndex];
     if (weatherData) {
       // calculate just the start time (not date & time) from the UTC 'gameDate' value
-      var startTime = dayjs(gameData.gameDate).subtract((userTZOffset - gamesData[teamKey].weather.timezone_offset) / 60, 'm').format('h:mm A')
-      var gameDate = dayjs(gameData.officialDate + 'T23:00:00Z').format('dddd, M/D');
-      gameData.gameTimeLocal = gameDate + ' @ ' + startTime;
+      var localDateTimeDjs = dayjs(gameData.gameDate).subtract((userTZOffset - gamesData[teamKey].weather.timezone_offset) / 60, 'm');
+      gameData.gameTimeLocal = localDateTimeDjs.format('h:mm A')
+      gameData.startHourLocal = parseInt(localDateTimeDjs.format('H'));
+      gameData.gameDateLocal = dayjs(gameData.officialDate + 'T23:00:00Z').format('dddd, M/D');
+      gamesData[teamKey].schedule.games[i] = gameData;
+      updateGamesData(teamKey, 'schedule', gamesData[teamKey].schedule);
 
       document.querySelector('#upcoming-games').appendChild(buildScheduleOverviewCard(gameData, weatherData));
       gamesShown++;
