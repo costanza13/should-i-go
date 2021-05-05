@@ -46,26 +46,17 @@ const userTZOffset = parseInt(dayjs().format('Z').replace(/\:.*$/, '')) * 60 * 6
 var loadGamesData = function() {
   var gamesDataJson = localStorage.getItem('gamesData');
   if (!gamesDataJson) {
-    gamesData = { validDateStamp : today.format('YYYY-MM-DD') };
+    gamesData = {};
   } else {
     gamesData = JSON.parse(gamesDataJson);
-    if (!gamesData.validDateStamp || gamesData.validDateStamp != today.format('YYYY-MM-DD')) {
-      gamesData = { validDateStamp : today.format('YYYY-MM-DD') };
-    }
   }
   return gamesData;
 };
 
-var updateGamesData = function(teamKey, newKey, newData) {
-  if (!gamesData.validDateStamp || gamesData.validDateStamp != today.format('YYYY-MM-DD')) {
-    gamesData = { validDateStamp : today.format('YYYY-MM-DD') };
-  }
-  if (!gamesData[teamKey]) {
-    gamesData[teamKey] = { [newKey]: newData };
-  } else {
-    gamesData[teamKey][newKey] = newData;
-  }
-  localStorage.setItem('gamesData', JSON.stringify(gamesData));
+var isStale = function(teamKey) {
+  // if stored schedule/weather data more than 60 minutes old
+  console.log('isStale', gamesData, gamesData[teamKey]);
+  return (!gamesData[teamKey] || !gamesData[teamKey].lastRefreshed || Date.now() - gamesData[teamKey].lastRefreshed > 60 * 60 * 1000);
 }
 
 /* 
@@ -102,8 +93,11 @@ var fetchSchedule = function (teamKey) {
               }
             }
           }
-          // save schedule data in local storage for quick retrieval
-          updateGamesData(teamKey, 'schedule', schedule);
+          if (!gamesData[teamKey]) {
+            gamesData[teamKey] = { schedule: schedule };
+          } else {
+            gamesData[teamKey].schedule = schedule;
+          }
 
           fetchWeatherForecast(teamKey);
         });
@@ -142,8 +136,15 @@ var fetchWeatherForecast = function (teamKey) {
             fetch(endpoint).then(function (response) {
               if (response.ok) {
                 response.json().then(function (data) {
-                  // store weather data in local storage to use in the hourly forecast for game day
-                  updateGamesData(teamKey, 'weather', data);
+                  if (!gamesData[teamKey]) {
+                    gamesData[teamKey] = { weather: data };
+                  } else {
+                    gamesData[teamKey].weather = data;
+                  }
+
+                  // save schedule/weather data in local storage for quick retrieval
+                  gamesData[teamKey].lastRefreshed = Date.now();
+                  localStorage.setItem('gamesData', JSON.stringify(gamesData));
 
                   // pass data to displaySchedule() function
                   displaySchedule(teamKey);
@@ -252,7 +253,7 @@ var displaySchedule = function (teamKey) {
       gameData.startHourLocal = parseInt(localDateTimeDjs.format('H'));
       gameData.gameDateLocal = dayjs(gameData.officialDate + 'T23:00:00Z').format('dddd, M/D');
       gamesData[teamKey].schedule.games[i] = gameData;
-      updateGamesData(teamKey, 'schedule', gamesData[teamKey].schedule);
+      localStorage.setItem('gamesData', JSON.stringify(gamesData));
 
       document.querySelector('#upcoming-games').appendChild(buildScheduleOverviewCard(gameData, weatherData));
       gamesShown++;
@@ -287,11 +288,14 @@ var displayGameDayInfo = function (teamKey, index) {
 var handleTeamSelect = function (event) {
   var teamKey = event.target.value;
   // grab the selected team id
-  // do a lookup on the mlbTeamsData array
-  // call fetchSchedule() passing the selected team's object
+  // if the data in local storage is not stale
+  if (!isStale(teamKey)) {
+    displaySchedule(teamKey);
+  } else {
+    fetchSchedule(teamKey);
+  }
   // console.log('team selected', teamKey);
   // console.log('selected team data', mlbTeamsData[teamKey]);
-  fetchSchedule(teamKey);
 };
 
 var handleGameClick = function (event) {
