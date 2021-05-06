@@ -55,7 +55,6 @@ var loadGamesData = function() {
 
 var isStale = function(teamKey) {
   // if stored schedule/weather data more than 60 minutes old
-  console.log('isStale', gamesData, gamesData[teamKey]);
   return (!gamesData[teamKey] || !gamesData[teamKey].lastRefreshed || Date.now() - gamesData[teamKey].lastRefreshed > 60 * 60 * 1000);
 }
 
@@ -65,7 +64,6 @@ var isStale = function(teamKey) {
 */
 var fetchSchedule = function (teamKey) {
   var teamData = mlbTeamsData[teamKey];
-  gamesData.lastTeamKey = teamKey;
 
   // get current date
   var startDate = today.format('YYYY-MM-DD');
@@ -233,6 +231,8 @@ var buildScheduleOverviewCard = function (gameData, weatherData) {
 };
   
 var displaySchedule = function (teamKey) {
+  gamesData.lastTeamKey = teamKey;
+
   // use the schedule data returned from the mlb stats api to fill in/build out the upcoming schedule
   // if no games, this function should display a message and hide the forecast container
   // console.log('gamesData', gamesData);
@@ -324,10 +324,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
   var selectEls = document.querySelectorAll('select');
   var instances = M.FormSelect.init(selectEls, { width: 'auto' });
 
-  if (gamesData.lastTeamKey) {
-    fetchSchedule(gamesData.lastTeamKey);
-  }
-
   // add an event listener to the team select input(s) and call handleTeamSelect()
   teamSelectEl.addEventListener('change', handleTeamSelect);
+
+  if (gamesData.lastTeamKey) {
+    // fetchSchedule(gamesData.lastTeamKey);
+    var evt = document.createEvent("HTMLEvents");
+    evt.initEvent("change", false, true);
+    teamSelectEl.dispatchEvent(evt);
+  }
 });
