@@ -285,7 +285,7 @@ var displaySchedule = function (teamKey) {
   teamSelectBarEl.querySelector('.select-dropdown').classList.add('dropdown-secondary');
 
   // show most recent teams buttons
-  if (gamesData.lastTeamKeys.length) {
+  if (gamesData.lastTeamKeys.length > 1) {
     while (teamHistoryButtonsEl.childNodes[0]) {
       teamHistoryButtonsEl.childNodes[0].remove();
     }
