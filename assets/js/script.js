@@ -289,8 +289,7 @@ var displaySchedule = function (teamKey) {
     }
   }
   teamSelectBarEl.setAttribute('style', 'background-color: '  + mlbTeamsData[teamKey].hexColor);
-  // teamSelectBarEl.querySelector('.select-dropdown').classList.add('dropdown-secondary');
-
+  
   // show most recent teams buttons
   if (gamesData.lastTeamKeys.length > 1) {
     while (teamHistoryButtonsEl.childNodes[0]) {
@@ -307,6 +306,7 @@ var displaySchedule = function (teamKey) {
     teamHistoryButtonsEl.classList.remove('hide');
   }
 
+  window.scrollTo(0, 0);
   gamesOverviewEl.classList.remove('hide');
 
 };
