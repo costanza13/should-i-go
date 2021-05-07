@@ -37,11 +37,10 @@ const teamSelectMenuEl = document.querySelector('#team-select-menu');
 const teamSelectEl = document.querySelector('#team-select');
 const startScreenEl = document.querySelector('#startScreen');
 const gamesOverviewEl = document.querySelector('#gamesOverview');
-
+const teamHistoryButtonsEl = document.querySelector('#team-history-buttons');
 const today = dayjs();
 
 const userTZOffset = parseInt(dayjs().format('Z').replace(/\:.*$/, '')) * 60 * 60;
-// console.log('user time zone', userTZOffset);
 
 var loadGamesData = function() {
   var gamesDataJson = localStorage.getItem('gamesData');
@@ -56,6 +55,22 @@ var loadGamesData = function() {
 var isStale = function(teamKey) {
   // if stored schedule/weather data more than 60 minutes old
   return (!gamesData[teamKey] || !gamesData[teamKey].lastRefreshed || Date.now() - gamesData[teamKey].lastRefreshed > 60 * 60 * 1000);
+}
+
+var updateSearchHistory = function (teamKey) {
+  gamesData.lastTeamKey = teamKey;
+  if (!gamesData.lastTeamKeys) {
+    gamesData.lastTeamKeys = [teamKey];
+  } else {
+    var idx = gamesData.lastTeamKeys.indexOf(teamKey);
+    if (idx === -1) {
+      gamesData.lastTeamKeys.unshift(teamKey);
+      if (gamesData.lastTeamKeys.length > 3) {
+        gamesData.lastTeamKeys.splice(3);
+      }
+    }
+  }
+  localStorage.setItem('gamesData', JSON.stringify(gamesData));
 }
 
 /* 
@@ -81,11 +96,9 @@ var fetchSchedule = function (teamKey) {
             // handle double headers
             for (var j = 0; j < data.dates[i].games.length; j++) {
               var gameData = data.dates[i].games[j];
-              // console.log('fetched game', gameData);
               if (gameData.teams.home.team.id === teamData.mlbStatsId) {
                 // check if game is postponed
-                if (gameData.status.detailedState != 'Postponed') {
-                  // console.log(gameData.gameTimeLocal);
+                if (gameData.status.codedGameState == 'S') {
                   schedule.games.push(gameData);
                 }
               }
@@ -127,7 +140,6 @@ var fetchWeatherForecast = function (teamKey) {
       if (response.ok) {
         response.json().then(function (data) {
           if (data.length) {
-            // console.log('city data', data[0]);
 
             var endpoint = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + data[0].lat + '&lon=' + data[0].lon + '&exclude=minutely&units=imperial&appid=' + OWM_KEY;
 
@@ -170,7 +182,6 @@ var fetchWeatherForecast = function (teamKey) {
 };
 
 var fetchGameDetails = function (teamKey, index) {
-  // console.log('game data', gamesData[teamKey].schedule.games[index]);
   // use the passed in index to grab the gameDetailsUri at gamesData.schedule.dates[index].games[0].link
   // fetch game details from mlb stats api using the gameDetailsUri
   var endpoint = 'https://statsapi.mlb.com/' + gamesData[teamKey].schedule.games[index].link;
@@ -196,8 +207,6 @@ var fetchGameDetails = function (teamKey, index) {
 };
 
 var buildScheduleOverviewCard = function (gameData, weatherData) {
-  // console.log('game', gameData);
-  // console.log('weather', weatherData);
   var awayId = gameData.teams.away.team.id;
   var homeId = gameData.teams.home.team.id;
 
@@ -231,11 +240,9 @@ var buildScheduleOverviewCard = function (gameData, weatherData) {
 };
   
 var displaySchedule = function (teamKey) {
-  gamesData.lastTeamKey = teamKey;
 
   // use the schedule data returned from the mlb stats api to fill in/build out the upcoming schedule
   // if no games, this function should display a message and hide the forecast container
-  // console.log('gamesData', gamesData);
   document.querySelector('#upcoming-games').innerHTML = '';
 
   var currentDate = dayjs().format('YYYY-MM-DDT:00:00:00');
@@ -265,7 +272,7 @@ var displaySchedule = function (teamKey) {
 
       // otherwise, if there are no games with weather to display
       } else {
-        document.querySelector('#upcoming-games').innerHTML = '<h4>Sorry, there are no home games within the next week.</h4>';
+        document.querySelector('#upcoming-games').innerHTML = '<h4 class="no-results">Sorry, there are no home games within the next week.</h4>';
       }
     }
   }
@@ -274,8 +281,25 @@ var displaySchedule = function (teamKey) {
   while (teamSelectMainEl.childNodes.length > 0) {
     teamSelectMenuEl.appendChild(teamSelectMainEl.firstChild);
   }
-  teamSelectBarEl.setAttribute('style', 'background-color: '  + mlbTeamsData[teamKey].hexColor)
+  teamSelectBarEl.setAttribute('style', 'background-color: '  + mlbTeamsData[teamKey].hexColor);
   teamSelectBarEl.querySelector('.select-dropdown').classList.add('dropdown-secondary');
+
+  // show most recent teams buttons
+  if (gamesData.lastTeamKeys.length) {
+    while (teamHistoryButtonsEl.childNodes[0]) {
+      teamHistoryButtonsEl.childNodes[0].remove();
+    }
+    for (var i = 0; i < gamesData.lastTeamKeys.length; i++) {
+      var btn = document.createElement('button');
+      btn.setAttribute('value', gamesData.lastTeamKeys[i]);
+      btn.classList.add('btn');
+      btn.textContent = mlbTeamsData[gamesData.lastTeamKeys[i]].shortName;
+      btn.setAttribute('style', 'background-color: '  + mlbTeamsData[gamesData.lastTeamKeys[i]].hexColor)
+      teamHistoryButtonsEl.appendChild(btn);
+    }
+    teamHistoryButtonsEl.classList.remove('hide');
+  }
+
   gamesOverviewEl.classList.remove('hide');
 
 };
@@ -287,6 +311,8 @@ var displayGameDayInfo = function (teamKey, index) {
 
 var handleTeamSelect = function (event) {
   var teamKey = event.target.value;
+  updateSearchHistory(teamKey);
+
   // grab the selected team id
   // if the data in local storage is not stale
   if (!isStale(teamKey)) {
@@ -294,15 +320,6 @@ var handleTeamSelect = function (event) {
   } else {
     fetchSchedule(teamKey);
   }
-  // console.log('team selected', teamKey);
-  // console.log('selected team data', mlbTeamsData[teamKey]);
-};
-
-var handleGameClick = function (event) {
-  console.log(event);
-  // get the selectedIndex from the selected game
-  // call fetchGameDetails() passing the selectedIndex
-  console.log('game selected');
 };
 
 var gamesData = loadGamesData();
@@ -327,8 +344,24 @@ document.addEventListener('DOMContentLoaded', (event) => {
   // add an event listener to the team select input(s) and call handleTeamSelect()
   teamSelectEl.addEventListener('change', handleTeamSelect);
 
+  // add an event listener to the team history buttons and call handleTeamSelect()
+  teamHistoryButtonsEl.addEventListener('click', function(event) {
+    var teamKey = event.target.value;
+    var idx = 0;
+    // get the option dropdown index number
+    for (var i = 0; i < teamSelectEl.options.length; i++) {
+      if (teamKey == teamSelectEl.options[i].value) {
+        idx = i;
+      }
+    }
+    var evt = document.createEvent("HTMLEvents");
+    evt.initEvent("click", false, true);
+    var dropdownEl = document.querySelector('.dropdown-content');
+    var clickOptionEl = dropdownEl.children[idx];
+    clickOptionEl.dispatchEvent(evt);
+  });
+
   if (gamesData.lastTeamKey) {
-    // fetchSchedule(gamesData.lastTeamKey);
     var evt = document.createEvent("HTMLEvents");
     evt.initEvent("change", false, true);
     teamSelectEl.dispatchEvent(evt);
