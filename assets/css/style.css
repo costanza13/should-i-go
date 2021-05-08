@@ -93,14 +93,14 @@ body {
   background-position: right 10px center;
 }
 
-#team-select-ul {
+#team-select {
   display: none;
   color: #26a69a;
   position: absolute;
   z-index: 999;
 }
 
-#team-select-control, #team-select-ul {
+#team-select-control, #team-select {
   background-color: #fff;
   border-width: 0;
   border-radius: 3px;
@@ -109,27 +109,22 @@ body {
   margin: 0.5rem;
 }
 
-#team-select-control.down {
-  border-radius: 3px 3px 0 0;
-  border-bottom-width: 0.5px;
-}
-
 #team-select-control li {
   background-color: transparent;
 }
 
-#team-select-ul.down {
+#team-select.down {
   display: block;
   height: 500px;
   overflow: scroll;
 }
 
-#team-select-menu #team-select-ul.down {
+#team-select-menu #team-select.down {
   position: absolute;
   z-index: 999;
 }
 
-#team-select-main #team-select-ul.down {
+#team-select-main #team-select.down {
   width: 96%;
 }
 
@@ -139,11 +134,11 @@ body {
   white-space: nowrap;
 }
 
-#team-select-ul .collection-item:hover {
+#team-select .collection-item:hover {
   background-color: #eee;
 }
 
-#team-select-control .disabled, #team-select-ul.down .disabled {
+#team-select-control .disabled, #team-select.down .disabled {
   color: lightgray;
 }
 
