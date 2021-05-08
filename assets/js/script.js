@@ -392,4 +392,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
       toggleTeamSelect('up');
     }
   }, true);
+
+  // header logo links to initial view (clears local storage)
+  document.querySelector('.brand-logo').addEventListener('click', function() {
+    localStorage.clear();
+    return true;
+  });
 });
