@@ -55,27 +55,94 @@ body {
 
 .btn {
   margin: 0 .2rem;
+  white-space: nowrap;
+}
+
+#team-select-main {
+  padding: 0;
+  margin: 0;
 }
 
 #team-select-bar {
   background-color: #888;
+  border-radius: 3px;
   display: flex;
   flex-wrap: wrap;
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
-  border-radius: 3px;
+  padding: 0;
 }
 
 #team-history-buttons {
-  text-align: center;
   background-color: #fff;
+  justify-content: center;
+  display: flex;
 }
 
-#team-select-main, #team-select-menu {
+#team-select-menu {
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+#team-select-control {
+  color: #464D57;
+  background: url('../images/caret-down.svg');
+  background-size: 10px 10px;
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
+
+#team-select-ul {
+  display: none;
+  color: #26a69a;
+  position: absolute;
+  z-index: 999;
+}
+
+#team-select-control, #team-select-ul {
   background-color: #fff;
-  padding: 0 0.5rem;
-  margin: 0.5rem;
+  border-width: 0;
   border-radius: 3px;
+  font-size: 110%;
+  font-weight: 500;
+  margin: 0.5rem;
+}
+
+#team-select-control.down {
+  border-radius: 3px 3px 0 0;
+  border-bottom-width: 0.5px;
+}
+
+#team-select-control li {
+  background-color: transparent;
+}
+
+#team-select-ul.down {
+  display: block;
+}
+
+#team-select-menu #team-select-ul.down {
+  position: absolute;
+  z-index: 999;
+}
+
+#team-select-main #team-select-ul.down {
+  width: 96%;
+}
+
+#team-select-control .collection-item, .collection-item {
+  padding: 10px 30px 10px 10px;
+  display: list-item;
+  white-space: nowrap;
+}
+
+#team-select-ul .collection-item:hover {
+  background-color: #eee;
+}
+
+#team-select-control .disabled, #team-select-ul.down .disabled {
+  color: lightgray;
 }
 
 .select-wrapper input.select-dropdown.dropdown-secondary {
@@ -153,9 +220,9 @@ body {
   margin-top: 10%;
 }
 
-@media screen and (min-width: 510px) {
+@media screen and (min-width: 641px) {
   .game-overview-card {
-    margin: 1rem 1rem;
+    margin: 1rem 0.7vw;
   }
 
   #team-select-bar {
@@ -164,7 +231,8 @@ body {
 
   #team-history-buttons {
     background-color: transparent;
-    text-align: right;
+    padding: 0 0.5rem;
+    justify-content: flex-end;
   }
 
   #team-history-buttons .btn {

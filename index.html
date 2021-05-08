@@ -8,7 +8,7 @@
   <title>Should I Go to the Game?</title>
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,500;1,300&display=swap">
+  <link  rel="stylesheet"href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel="stylesheet" href="./assets/css/style.css" />
 </head>
@@ -29,9 +29,12 @@
         <p>Choose your favorite team from the list below</p>
 
         <div id="team-select-main" class="input-field">
-          <select id="team-select">
-            <option value="" disabled selected>Select team</option>
-          </select>
+          <ul id="team-select-ul" class="up collection left-align">
+            <li id="team-select-default" class="collection-item disabled"><span class="team-name">Select team</span></li>
+          </ul>  
+          <ul id="team-select-control" class="collection left-align">
+            <li class="collection-item disabled"><span class="team-name">Select team</span></li>
+          </ul>
         </div>
       </div>
     </div>
@@ -40,8 +43,8 @@
 
       <div class="col s12">
         <div id="team-select-bar" class="row">
-          <div id="team-select-menu" class="col s12 m4 l3"></div>
-          <div id="team-history-buttons" class="col s12 hide"></div>
+          <div id="team-select-menu" class="col s12 m12 l6 input-field"></div>
+          <div id="team-history-buttons" class="col s12 m12 l6 valign-wrapper hide"></div>
         </div>
 
         <div class="row">

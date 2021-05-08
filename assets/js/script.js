@@ -31,6 +31,9 @@ const gameOverviewCardTemplate =
   '</div>';
 
 
+const teamSelectControlEl = document.querySelector('#team-select-control');
+const teamSelectUlEl = document.querySelector('#team-select-ul');
+
 const teamSelectMainEl = document.querySelector('#team-select-main');
 const teamSelectBarEl = document.querySelector('#team-select-bar');
 const teamSelectMenuEl = document.querySelector('#team-select-menu');
@@ -41,6 +44,7 @@ const teamHistoryButtonsEl = document.querySelector('#team-history-buttons');
 const today = dayjs();
 
 const userTZOffset = parseInt(dayjs().format('Z').replace(/\:.*$/, '')) * 60 * 60;
+var teamSelectState = 'up';
 
 var loadGamesData = function() {
   var gamesDataJson = localStorage.getItem('gamesData');
@@ -277,13 +281,15 @@ var displaySchedule = function (teamKey) {
     }
   }
 
-  startScreenEl.classList.add('hide');
-  while (teamSelectMainEl.childNodes.length > 0) {
-    teamSelectMenuEl.appendChild(teamSelectMainEl.firstChild);
+  // mmove the select dropdown to the schedule view
+  if (!startScreenEl.classList.contains('hide')) {
+    startScreenEl.classList.add('hide');
+    while (teamSelectMainEl.childNodes.length > 0) {
+      teamSelectMenuEl.appendChild(teamSelectMainEl.firstChild);
+    }
   }
   teamSelectBarEl.setAttribute('style', 'background-color: '  + mlbTeamsData[teamKey].hexColor);
-  teamSelectBarEl.querySelector('.select-dropdown').classList.add('dropdown-secondary');
-
+  
   // show most recent teams buttons
   if (gamesData.lastTeamKeys.length > 1) {
     while (teamHistoryButtonsEl.childNodes[0]) {
@@ -300,6 +306,7 @@ var displaySchedule = function (teamKey) {
     teamHistoryButtonsEl.classList.remove('hide');
   }
 
+  window.scrollTo(0, 0);
   gamesOverviewEl.classList.remove('hide');
 
 };
@@ -309,8 +316,11 @@ var displayGameDayInfo = function (teamKey, index) {
   // console.log('game day info', gamesData[teamKey].schedule.games[index].details);
 };
 
-var handleTeamSelect = function (event) {
-  var teamKey = event.target.value;
+var handleTeamSelect = function (teamKey) {
+  teamSelectControlEl.children[0].classList.remove('disabled');
+  teamSelectControlEl.children[0].querySelector('.team-name').textContent = mlbTeamsData[teamKey].name;
+  
+  // console.log(event.target);
   updateSearchHistory(teamKey);
 
   // grab the selected team id
@@ -330,40 +340,44 @@ document.addEventListener('DOMContentLoaded', (event) => {
   var teamsArr = Object.entries(mlbTeamsData);
   teamsArr = teamsArr.sort((a, b) => { return (a[1].name < b[1].name ? -1 : 1) });
   for (var i = 0; i < teamsArr.length; i++) {
-    var teamOptionEl = document.createElement('option');
-    teamOptionEl.setAttribute('value', teamsArr[i][0]);
-    if (gamesData.lastTeamKey && gamesData.lastTeamKey == teamsArr[i][0]) {
-      teamOptionEl.setAttribute('selected', true);
-    }
-    teamOptionEl.innerHTML = teamsArr[i][1].name;
-    teamSelectEl.appendChild(teamOptionEl);
+    var teamOptionLiEl = document.createElement('li');
+    teamOptionLiEl.setAttribute('class', 'collection-item');
+    teamOptionLiEl.setAttribute('data-team-key', teamsArr[i][0]);
+    teamOptionLiEl.innerHTML = teamsArr[i][1].name;
+    teamSelectUlEl.appendChild(teamOptionLiEl);
   }
-  var selectEls = document.querySelectorAll('select');
-  var instances = M.FormSelect.init(selectEls, { width: 'auto' });
 
-  // add an event listener to the team select input(s) and call handleTeamSelect()
-  teamSelectEl.addEventListener('change', handleTeamSelect);
+  teamSelectControlEl.addEventListener('click', function(event) {
+    if (teamSelectState == 'up') {
+        teamSelectState = 'down';
+        teamSelectUlEl.classList.add('down');
+        teamSelectControlEl.classList.add('down');
+    } else {
+      teamSelectState = 'up';
+      teamSelectUlEl.classList.remove('down');
+      teamSelectControlEl.classList.remove('down');
+    }
+  });
+
+  teamSelectUlEl.addEventListener('click', function(event) {
+    var selectedItem = event.target.classList.contains('collection-item') ? event.target : event.target.closest('.collection-item');
+
+    teamSelectState = 'up';
+    teamSelectUlEl.classList.remove('down');
+    teamSelectControlEl.classList.remove('down');
+    var teamKey = selectedItem.getAttribute('data-team-key');
+    if (teamKey && (!gamesData.lastTeamKey || gamesData.lastTeamKey != teamKey)) {
+      handleTeamSelect(teamKey);
+    }
+  });
 
   // add an event listener to the team history buttons and call handleTeamSelect()
   teamHistoryButtonsEl.addEventListener('click', function(event) {
     var teamKey = event.target.value;
-    var idx = 0;
-    // get the option dropdown index number
-    for (var i = 0; i < teamSelectEl.options.length; i++) {
-      if (teamKey == teamSelectEl.options[i].value) {
-        idx = i;
-      }
-    }
-    var evt = document.createEvent("HTMLEvents");
-    evt.initEvent("click", false, true);
-    var dropdownEl = document.querySelector('.dropdown-content');
-    var clickOptionEl = dropdownEl.children[idx];
-    clickOptionEl.dispatchEvent(evt);
+    handleTeamSelect(teamKey);
   });
 
   if (gamesData.lastTeamKey) {
-    var evt = document.createEvent("HTMLEvents");
-    evt.initEvent("change", false, true);
-    teamSelectEl.dispatchEvent(evt);
+    handleTeamSelect(gamesData.lastTeamKey);
   }
 });
