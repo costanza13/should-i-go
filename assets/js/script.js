@@ -32,8 +32,6 @@ const gameOverviewCardTemplate =
 
 
 const teamSelectControlEl = document.querySelector('#team-select-control');
-const teamSelectUlEl = document.querySelector('#team-select-ul');
-
 const teamSelectMainEl = document.querySelector('#team-select-main');
 const teamSelectBarEl = document.querySelector('#team-select-bar');
 const teamSelectMenuEl = document.querySelector('#team-select-menu');
@@ -75,6 +73,23 @@ var updateSearchHistory = function (teamKey) {
     }
   }
   localStorage.setItem('gamesData', JSON.stringify(gamesData));
+}
+
+var toggleTeamSelect = function(toState) {
+  if (toState == 'up') {
+    if (teamSelectState == 'down') {
+      teamSelectState = 'up';
+      teamSelectEl.classList.remove('down');
+      teamSelectControlEl.classList.remove('down');
+    }
+  } else {
+    if (teamSelectState == 'up') {
+      teamSelectState = 'down';
+      teamSelectEl.classList.add('down');
+      teamSelectControlEl.classList.add('down');  
+      teamSelectEl.scrollTop = 0;
+    }
+  }
 }
 
 /* 
@@ -344,27 +359,21 @@ document.addEventListener('DOMContentLoaded', (event) => {
     teamOptionLiEl.setAttribute('class', 'collection-item');
     teamOptionLiEl.setAttribute('data-team-key', teamsArr[i][0]);
     teamOptionLiEl.innerHTML = teamsArr[i][1].name;
-    teamSelectUlEl.appendChild(teamOptionLiEl);
+    teamSelectEl.appendChild(teamOptionLiEl);
+  }
+
+  if (gamesData.lastTeamKey) {
+    handleTeamSelect(gamesData.lastTeamKey);
   }
 
   teamSelectControlEl.addEventListener('click', function(event) {
-    if (teamSelectState == 'up') {
-        teamSelectState = 'down';
-        teamSelectUlEl.classList.add('down');
-        teamSelectControlEl.classList.add('down');
-    } else {
-      teamSelectState = 'up';
-      teamSelectUlEl.classList.remove('down');
-      teamSelectControlEl.classList.remove('down');
-    }
+    toggleTeamSelect(teamSelectState == 'up' ? 'down' : 'up');
   });
 
-  teamSelectUlEl.addEventListener('click', function(event) {
+  teamSelectEl.addEventListener('click', function(event) {
     var selectedItem = event.target.classList.contains('collection-item') ? event.target : event.target.closest('.collection-item');
 
-    teamSelectState = 'up';
-    teamSelectUlEl.classList.remove('down');
-    teamSelectControlEl.classList.remove('down');
+    toggleTeamSelect('up');
     var teamKey = selectedItem.getAttribute('data-team-key');
     if (teamKey && (!gamesData.lastTeamKey || gamesData.lastTeamKey != teamKey)) {
       handleTeamSelect(teamKey);
@@ -377,7 +386,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
     handleTeamSelect(teamKey);
   });
 
-  if (gamesData.lastTeamKey) {
-    handleTeamSelect(gamesData.lastTeamKey);
-  }
+  // click outside of team select dropdown closes it up
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('#team-select-ul')) {
+      toggleTeamSelect('up');
+    }
+  }, true);
 });
