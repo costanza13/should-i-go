@@ -120,6 +120,8 @@ body {
 
 #team-select-ul.down {
   display: block;
+  height: 500px;
+  overflow: scroll;
 }
 
 #team-select-menu #team-select-ul.down {
