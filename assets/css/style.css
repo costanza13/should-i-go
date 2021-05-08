@@ -112,6 +112,8 @@ body {
 #team-select-control.down {
   border-radius: 3px 3px 0 0;
   border-bottom-width: 0.5px;
+  height: 500px;
+  overflow: scroll;
 }
 
 #team-select-control li {
