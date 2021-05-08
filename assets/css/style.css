@@ -97,7 +97,6 @@ body {
   display: none;
   color: #26a69a;
   position: absolute;
-  width: 96%;
   z-index: 999;
 }
 
@@ -121,9 +120,15 @@ body {
 
 #team-select-ul.down {
   display: block;
+}
+
+#team-select-menu #team-select-ul.down {
   position: absolute;
-  width: 96%;
   z-index: 999;
+}
+
+#team-select-main #team-select-ul.down {
+  width: 96%;
 }
 
 #team-select-control .collection-item, .collection-item {
