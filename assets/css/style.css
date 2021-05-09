@@ -112,7 +112,7 @@ body {
 }
 
 #team-select-control .disabled, #team-select.down .disabled {
-  color: lightgray;
+  color: darkgrey;
 }
 
 .select-wrapper input.select-dropdown.dropdown-secondary {
