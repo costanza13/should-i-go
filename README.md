@@ -21,5 +21,5 @@ THEN I can click a link to the team web site to purchase tickets
 
 ## Screenshots
 <img src="./assets/images/sig-start.png" width="47%">&nbsp;
-<img src="./assets/images/sig-mobile.png" width="49%"><br><br>
+<img src="./assets/images/sig-mobile.png" width="48.5%"><br><br>
 <img src="./assets/images/sig-desktop.png" width="97%">
